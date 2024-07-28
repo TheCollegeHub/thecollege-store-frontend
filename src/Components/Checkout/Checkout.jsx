@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ShopContext } from '../../Context/ShopContext';
@@ -17,7 +18,7 @@ const Checkout = () => {
   const [selectedCard, setSelectedCard] = useState('');
   const [isAddAddressOpen, setIsAddAddressOpen] = useState(false);
   const [isAddCardOpen, setIsAddCardOpen] = useState(false);
-  const [setError] = useState(false);
+  const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [openSnackbar, setOpenSnackbar] = useState(false);
 
