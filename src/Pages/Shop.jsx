@@ -6,12 +6,9 @@ import NewCollections from '../Components/NewCollections/NewCollections'
 // import NewsLetter from '../Components/NewsLetter/NewsLetter'
 import ImageCarousel from '../Components/Carousel/ImageCarousel'
 import { backend_url } from "../App"
-import { backend_url_2 } from "../index"
 
 const Shop = () => {
-
-  console.log(backend_url);
-  console.log(backend_url_2);
+  
   const [setPopular] = useState([]);
   const [newcollection, setNewCollection] = useState([]);
 
