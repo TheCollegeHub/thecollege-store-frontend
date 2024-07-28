@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import "./Hero.css";
 import image from "../Assets/hero_1.png";
 import hand_icon from "../Assets/hand_icon.png";
-import arrow_icon from "../Assets/arrow.png";
+// import arrow_icon from "../Assets/arrow.png";
 
 const Hero = () => {
   return (

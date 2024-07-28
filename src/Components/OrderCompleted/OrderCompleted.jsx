@@ -13,7 +13,7 @@ const OrderCompleted = () => {
 
   useEffect(() => {
     clearCart();
-  }, []);
+  });
 
   const handleGoMyOrders = () => {
     navigate('/myorders');

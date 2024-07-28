@@ -17,7 +17,7 @@ const RelatedProducts = ({category,id}) => {
       body: JSON.stringify({category:category}),
       })
     .then((res)=>res.json()).then((data)=>setRelated(data))
-  },[])
+  })
 
   return (
     <div className='relatedproducts'>

@@ -72,7 +72,7 @@ const ShopContextProvider = (props) => {
         method: "DELETE",
       });
       
-      if (response.status == 204) {
+      if (response.status === 204) {
         console.log("User cart was cleared successfully");
         setCartItems(getDefaultCart());
       } else {

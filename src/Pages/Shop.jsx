@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import Hero from '../Components/Hero/Hero'
-import Popular from '../Components/Popular/Popular'
-import Offers from '../Components/Offers/Offers'
+// import Popular from '../Components/Popular/Popular'
+// import Offers from '../Components/Offers/Offers'
 import NewCollections from '../Components/NewCollections/NewCollections'
-import NewsLetter from '../Components/NewsLetter/NewsLetter'
+// import NewsLetter from '../Components/NewsLetter/NewsLetter'
 import ImageCarousel from '../Components/Carousel/ImageCarousel'
 import { backend_url } from "../App"
 
 const Shop = () => {
 
-  const [popular, setPopular] = useState([]);
+  const [setPopular] = useState([]);
   const [newcollection, setNewCollection] = useState([]);
 
   const fetchInfo = () => { 
