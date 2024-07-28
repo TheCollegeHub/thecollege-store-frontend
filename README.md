@@ -1,1 +1,1 @@
-# thecollege-store-frontend
+# the-college-store-frontend

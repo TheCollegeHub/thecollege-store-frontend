@@ -1,0 +1,82 @@
+/* MyOrders.css */
+  .orders-container {
+    padding: 20px;
+    max-width: 800px;
+    margin: 20px auto;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .orders-container h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  
+  .orders-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .order-item {
+    border: 1px solid #ccc;
+    background-color: #fff;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s;
+  }
+  
+  .order-item:hover {
+    background-color: #f1f1f1;
+  }
+  
+  .order-summary {
+    flex-grow: 1;
+  }
+  
+  .order-summary span {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 14px;
+    color: #333;
+  }
+  
+  .order-details-link {
+    text-decoration: none;
+    color: #007bff;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+  }
+  
+  .order-details-link span {
+    margin-left: 5px;
+  }
+  
+  .order-details-link:hover {
+    text-decoration: underline;
+  }
+  
+  .view-details-span {
+    display: inline-block;
+    padding: 8px 16px;
+    background-color: #007bff;
+    color: #ffffff !important; /* Força a cor do texto como branco */
+    border-radius: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease;
+    font-size: 14px;
+  }
+  
+  .view-details-span:hover {
+    background-color: #0056b3;
+  }
+  
+  

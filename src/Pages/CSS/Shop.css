@@ -1,0 +1,8 @@
+.shop-container {
+  padding: 20px; /* Espaçamento interno geral */
+}
+
+/* Ajustes específicos para o Hero */
+.hero {
+  margin-top: 20px; /* Espaçamento entre o carousel e o Hero */
+}

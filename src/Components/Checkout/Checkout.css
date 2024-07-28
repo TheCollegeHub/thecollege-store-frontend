@@ -1,0 +1,28 @@
+/* src/Components/Checkout/Checkout.css */
+
+.checkout-paper {
+    padding: 20px;
+    margin-top: 20px;
+  }
+  
+  .checkout-section {
+    margin-bottom: 20px;
+  }
+  
+  .checkout-summary h6 {
+    margin-bottom: 15px;
+  }
+  
+
+  .order-summary-container {
+    position: sticky;
+    top: 0;
+  }
+  
+  .checkout-summary {
+    padding: 16px;
+    background: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+  }
+  
