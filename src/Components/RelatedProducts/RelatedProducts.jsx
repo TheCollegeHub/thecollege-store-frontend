@@ -19,16 +19,17 @@ const RelatedProducts = ({category,id}) => {
     .then((res)=>res.json()).then((data)=>setRelated(data))
   })
 
+  // eslint-disable-next-line
   return (
     <div className='relatedproducts'>
       <h1>Related Products</h1>
       <hr />
       <div className="relatedproducts-item">
-        {related.map((item,index)=>{
-          if (id !== item.id) {
-            return <Item key={index} id={item.id} name={item.name} image={item.image}  new_price={item.new_price} old_price={item.old_price}/>
-          }
-        })}
+        {related
+          .filter(item => id !== item.id)
+          .map((item, index) => (
+            <Item key={index} id={item.id} name={item.name} image={item.image} new_price={item.new_price} old_price={item.old_price} />
+          ))}
       </div>
     </div>
   )

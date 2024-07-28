@@ -23,7 +23,7 @@ const Shop = () => {
 
     useEffect(() => {
       fetchInfo();
-    }, [])
+    })
 
 
   return (
