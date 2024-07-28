@@ -15,6 +15,7 @@ import MyOrders from './Components/MyOrders/MyOrders';
 import OrderDetails from './Components/OrderDetails/OrderDetails';
 export const backend_url = process.env.BACKEND_HOST || 'http://localhost:4000';
 export const currency = '$';
+console.log(backend_url);
 
 function App() {
 
