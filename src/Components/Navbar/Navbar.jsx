@@ -61,10 +61,10 @@ const Navbar = () => {
       </Link>
       <img onClick={dropdown_toggle} className='nav-dropdown' src={nav_dropdown} alt="" />
       <ul ref={menuRef} className="nav-menu">
-        <li onClick={() => { setMenu("shop") }}><Link to='/' style={{ textDecoration: 'none' }}>Shop</Link>{menu === "shop" ? <hr /> : <></>}</li>
-        <li onClick={() => { setMenu("men") }}><Link to='/men' style={{ textDecoration: 'none' }}>Men</Link>{menu === "men" ? <hr /> : <></>}</li>
-        <li onClick={() => { setMenu("women") }}><Link to='/women' style={{ textDecoration: 'none' }}>Women</Link>{menu === "women" ? <hr /> : <></>}</li>
-        <li onClick={() => { setMenu("kids") }}><Link to='/kids' style={{ textDecoration: 'none' }}>Kids</Link>{menu === "kids" ? <hr /> : <></>}</li>
+        <li data-qa-locator={"shop-nav"} Click={() => { setMenu("shop") }}><Link to='/' style={{ textDecoration: 'none' }}>Shop</Link>{menu === "shop" ? <hr /> : <></>}</li>
+        <li data-qa-locator={"men-nav"} onClick={() => { setMenu("men") }}><Link to='/men' style={{ textDecoration: 'none' }}>Men</Link>{menu === "men" ? <hr /> : <></>}</li>
+        <li data-qa-locator={"women-nav"} onClick={() => { setMenu("women") }}><Link to='/women' style={{ textDecoration: 'none' }}>Women</Link>{menu === "women" ? <hr /> : <></>}</li>
+        <li data-qa-locator={"kids-nav"} onClick={() => { setMenu("kids") }}><Link to='/kids' style={{ textDecoration: 'none' }}>Kids</Link>{menu === "kids" ? <hr /> : <></>}</li>
       </ul>
       <div className="nav-login-cart">
         {localStorage.getItem('auth-token') && userName
@@ -92,8 +92,8 @@ const Navbar = () => {
               </Menu>
             </>
           : <Link to='/login' style={{ textDecoration: 'none' }}><button data-qa-label="button-login">Login</button></Link>}
-        <Link to="/cart"><img src={cart_icon} alt="cart" /></Link>
-        <div className="nav-cart-count">{getTotalCartItems()}</div>
+        <Link data-qa-locator={"cart-button"} to="/cart"><img src={cart_icon} alt="cart" /></Link>
+        <div id='cart-items' className="nav-cart-count">{getTotalCartItems()}</div>
       </div>
     </div>
   );

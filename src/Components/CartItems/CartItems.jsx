@@ -69,7 +69,7 @@ const CartItems = () => {
             if (cartItems[e.id] > 0) {
               return (
                 <div key={e.id}>
-                  <div className="cartitems-format-main cartitems-format">
+                  <div data-qa-label={"product-item-cart"} className="cartitems-format-main cartitems-format">
                     <img className="cartitems-product-icon" src={backend_url + e.image} alt="" />
                     <p className="cartitems-product-title">{e.name}</p>
                     <p>{currency}{e.new_price}</p>
@@ -130,15 +130,16 @@ const CartItems = () => {
               <p>If you have a promo code, enter it here</p>
               <div className="cartitems-promobox">
                 <input 
+                  data-qa-locator={"promo-code-input"}
                   type="text" 
                   placeholder="Promo code" 
                   value={discountCode}
                   onChange={(e) => setDiscountCode(e.target.value)}
                 />
-                <Button variant="contained" color="primary" onClick={handleDiscountSubmit}>Submit</Button>
+                <Button id="submit-button"  variant="contained" color="primary" onClick={handleDiscountSubmit}>Submit</Button>
               </div>
               {discountAppliedMessage && (
-                <p className={discountAppliedMessage.includes("Invalid") || discountAppliedMessage.includes("already") ? "invalid-code" : ""}>{discountAppliedMessage}</p>
+                <p name={"discount-message"} className={discountAppliedMessage.includes("Invalid") || discountAppliedMessage.includes("already") ? "invalid-code" : ""}>{discountAppliedMessage}</p>
               )}
             </div>
           </div>

@@ -57,14 +57,14 @@ const ProductDisplay = ({ product }) => {
             <div>XXL</div>
           </div>
         </div>
-        <button onClick={() => handleAddToCart(product.id)}>ADD TO CART</button>
+        <button data-qa-locator={"add-to-cart-button"} onClick={() => handleAddToCart(product.id)}>ADD TO CART</button>
         <p className="productdisplay-right-category"><span>Category :</span> Women, T-shirt, Crop Top</p>
         <p className="productdisplay-right-category"><span>Tags :</span> Modern, Latest</p>
       </div>
       {showModal && (
-        <div className="modal">
+        <div data-qa-locator={'modal'} className="modal">
           <div className="modal-content">
-            <p>Product added to cart successfully!</p>
+            <p data-qa-locator={'modal-message'}>Product added to cart successfully!</p>
           </div>
         </div>
       )}
