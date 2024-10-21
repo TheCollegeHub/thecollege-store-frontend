@@ -3,6 +3,7 @@ import "./CSS/ShopCategory.css";
 import { FaSort } from "react-icons/fa";
 import Item from "../Components/Item/Item";
 import { Link } from "react-router-dom";
+import { backend_url } from "../App"
 
 const ShopCategory = (props) => {
   const [allproducts, setAllProducts] = useState([]);
