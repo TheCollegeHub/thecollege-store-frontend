@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Alert, AlertTitle } from "@mui/material";
 import "./CSS/LoginSignup.css";
-import { backend_url } from "../App"
 
 const LoginSignup = () => {
   const [state, setState] = useState("Login");
@@ -14,7 +13,7 @@ const LoginSignup = () => {
 
   const handleLogin = async () => {
     try {
-      const response = await fetch(`${backend_url}/login`, {
+      const response = await fetch(`${backend_url}/api/login`, {
         method: "POST",
         headers: {
           Accept: "application/form-data",
@@ -40,7 +39,7 @@ const LoginSignup = () => {
 
   const handleSignup = async () => {
     try {
-      const response = await fetch(`${backend_url}/signup`, {
+      const response = await fetch(`${backend_url}/api/signup`, {
         method: "POST",
         headers: {
           Accept: "application/form-data",

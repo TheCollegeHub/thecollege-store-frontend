@@ -20,12 +20,12 @@ const ShopContextProvider = (props) => {
   const [cartItems, setCartItems] = useState(getDefaultCart());
 
   useEffect(() => {
-    fetch(`${backend_url}/allproducts`)
+    fetch(`${backend_url}/api/allproducts`)
       .then((res) => res.json())
       .then((data) => setProducts(data));
 
     if (localStorage.getItem("auth-token")) {
-      fetch(`${backend_url}/getcart`, {
+      fetch(`${backend_url}/api/getcart`, {
         method: 'POST',
         headers: {
           Accept: 'application/form-data',
@@ -93,7 +93,7 @@ const ShopContextProvider = (props) => {
         return;
       }
       
-      const response = await fetch(`${backend_url}/addtocart`, {
+      const response = await fetch(`${backend_url}/api/addtocart`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -121,7 +121,7 @@ const ShopContextProvider = (props) => {
   const removeFromCart = (itemId) => {
     setCartItems((prev) => ({ ...prev, [itemId]: prev[itemId] - 1 }));
     if (localStorage.getItem("auth-token")) {
-      fetch(`${backend_url}/removefromcart`, {
+      fetch(`${backend_url}/api/removefromcart`, {
         method: 'POST',
         headers: {
           Accept: 'application/form-data',
@@ -135,7 +135,7 @@ const ShopContextProvider = (props) => {
 
   const applyDiscount = async (code) => {
     try {
-      const response = await fetch(`${backend_url}/applydiscount`, {
+      const response = await fetch(`${backend_url}/api/applydiscount`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
