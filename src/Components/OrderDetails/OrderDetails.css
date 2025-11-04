@@ -80,7 +80,7 @@
 .header-icon {
   width: 56px;
   height: 56px;
-  background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+  background: linear-gradient(135deg, #3478F6, #2563EB);
   border-radius: var(--border-radius-lg);
   display: flex;
   align-items: center;
@@ -88,6 +88,14 @@
   color: white;
   box-shadow: var(--shadow-lg);
   flex-shrink: 0;
+}
+
+.header-icon svg {
+  width: 24px;
+  height: 24px;
+  color: white;
+  fill: none;
+  stroke: currentColor;
 }
 
 .header-text {
@@ -164,13 +172,21 @@
 .card-header .header-icon {
   width: 32px;
   height: 32px;
-  background: rgba(var(--primary-rgb), 0.1);
+  background: rgba(52, 120, 246, 0.1);
   border-radius: var(--border-radius-sm);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--primary-color);
+  color: #3478F6;
   box-shadow: none;
+}
+
+.card-header .header-icon svg {
+  width: 20px;
+  height: 20px;
+  color: #3478F6;
+  fill: none;
+  stroke: currentColor;
 }
 
 .card-title {
