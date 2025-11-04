@@ -261,7 +261,7 @@ const handleCloseSnackbar = () => {
           <div className="payment-actions">
             <Button
               variant="contained"
-              className="payment-btn"
+              className="payment-btn checkout-btn"
               onClick={handlePayment}
               fullWidth
             >
@@ -269,7 +269,7 @@ const handleCloseSnackbar = () => {
             </Button>
             <Button
               variant="outlined"
-              className="back-to-cart-btn"
+              className="back-to-cart-btn continue-shopping-btn"
               onClick={() => navigate('/cart')}
               fullWidth
             >
@@ -281,102 +281,183 @@ const handleCloseSnackbar = () => {
         {/* Checkout Form - Right Side */}
         <div className="checkout-form-section">
           <div className="checkout-header">
-            <Typography variant="h4" className="form-title">Checkout Details</Typography>
+            <div className="header-content">
+              <div className="header-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </div>
+              <div className="header-text">
+                <h2 className="form-title">Checkout Details</h2>
+                <p className="form-subtitle">Secure and fast checkout process</p>
+              </div>
+            </div>
           </div>
 
           {/* Delivery Address Section */}
-          <div className="checkout-section">
+          <div className="checkout-section address-section">
             <div className="section-header">
-              <Typography variant="h6" className="section-title">Delivery Address</Typography>
+              <div className="section-title-container">
+                <div className="section-icon">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 21C15.5 17.4 19 14.1764 19 10.2C19 6.22355 15.7764 3 12 3C8.22355 3 5 6.22355 5 10.2C5 14.1764 8.5 17.4 12 21Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M12 13C13.6569 13 15 11.6569 15 10C15 8.34315 13.6569 7 12 7C10.3431 7 9 8.34315 9 10C9 11.6569 10.3431 13 12 13Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                </div>
+                <h3 className="section-title">Delivery Address</h3>
+              </div>
               <Button 
                 variant="outlined" 
-                className="add-btn"
+                className="add-btn modern-add-btn"
                 onClick={handleAddAddress}
               >
-                + Add New
+                <span className="btn-icon">+</span>
+                Add New
               </Button>
             </div>
             
-            <div className="options-container">
+            <div className="options-container modern-options">
               {addressesLoaded ? (
                 addresses.length > 0 ? (
-                  <RadioGroup value={selectedAddress} onChange={(e) => setSelectedAddress(e.target.value)}>
+                  <RadioGroup value={selectedAddress} onChange={(e) => setSelectedAddress(e.target.value)} className="radio-group-modern">
                     {addresses.map((address) => (
-                      <div key={address._id} className="option-card">
-                        <FormControlLabel
-                          value={address._id}
-                          control={<Radio />}
-                          label=""
-                          className="option-radio"
-                        />
-                        <div className="option-content">
-                          <div className="option-title">Home Address</div>
-                          <div className="option-details">
-                            {`${address.street}, ${address.city}, ${address.state}, ${address.zip}`}
+                      <div key={address._id} className="modern-option-card address-card">
+                        <div className="card-content">
+                          <div className="card-header">
+                            <div className="address-icon">
+                              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M3 9L12 2L21 9V20C21 20.5304 20.7893 21.0391 20.4142 21.4142C20.0391 21.7893 19.5304 22 19 22H5C4.46957 22 3.96086 21.7893 3.58579 21.4142C3.21071 21.0391 3 20.5304 3 20V9Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                                <path d="M9 22V12H15V22" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                              </svg>
+                            </div>
+                            <div className="card-title">Home Address</div>
+                            <FormControlLabel
+                              value={address._id}
+                              control={<Radio className="modern-radio" />}
+                              label=""
+                              className="card-radio"
+                            />
+                          </div>
+                          <div className="card-details">
+                            <p className="address-line">{address.street}</p>
+                            <p className="address-line">{address.city}, {address.state} {address.zip}</p>
+                          </div>
+                          <div className="card-badge">
+                            <span className="badge-text">Primary</span>
                           </div>
                         </div>
                       </div>
                     ))}
                   </RadioGroup>
                 ) : (
-                  <div className="empty-state">
-                    <Typography variant="body1" className="empty-message">
-                      No addresses found. Please add a new address.
-                    </Typography>
+                  <div className="modern-empty-state">
+                    <div className="empty-icon">
+                      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2"/>
+                        <path d="M12 6V12L16 14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                      </svg>
+                    </div>
+                    <h4 className="empty-title">No addresses found</h4>
+                    <p className="empty-message">Add your first delivery address to continue</p>
+                    <Button variant="contained" onClick={handleAddAddress} className="empty-action-btn">
+                      Add Address
+                    </Button>
                   </div>
                 )
               ) : (
-                <div className="loading-state">
-                  <Typography variant="body1">Loading addresses...</Typography>
+                <div className="modern-loading-state">
+                  <div className="loading-spinner"></div>
+                  <p className="loading-text">Loading addresses...</p>
                 </div>
               )}
             </div>
           </div>
 
           {/* Payment Method Section */}
-          <div className="checkout-section">
+          <div className="checkout-section payment-section">
             <div className="section-header">
-              <Typography variant="h6" className="section-title">Payment Method</Typography>
+              <div className="section-title-container">
+                <div className="section-icon">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="2" y="4" width="20" height="16" rx="3" stroke="currentColor" strokeWidth="2"/>
+                    <path d="M2 10H22" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+                    <path d="M6 14H6.01" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M10 14H12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                </div>
+                <h3 className="section-title">Payment Method</h3>
+              </div>
               <Button 
                 variant="outlined" 
-                className="add-btn"
+                className="add-btn modern-add-btn"
                 onClick={handleAddCard}
               >
-                + Add New
+                <span className="btn-icon">+</span>
+                Add New
               </Button>
             </div>
             
-            <div className="options-container">
+            <div className="options-container modern-options">
               {cardsLoaded ? (
                 cards.length > 0 ? (
-                  <RadioGroup value={selectedCard} onChange={(e) => setSelectedCard(e.target.value)}>
+                  <RadioGroup value={selectedCard} onChange={(e) => setSelectedCard(e.target.value)} className="radio-group-modern">
                     {cards.map((card) => (
-                      <div key={card._id} className="option-card">
-                        <FormControlLabel
-                          value={card._id}
-                          control={<Radio />}
-                          label=""
-                          className="option-radio"
-                        />
-                        <div className="option-content">
-                          <div className="option-title">Credit Card</div>
-                          <div className="option-details">
-                            ****-****-****-{card.cardNumber.slice(-4)} | Exp: {card.expiryDate}
+                      <div key={card._id} className="modern-option-card payment-card">
+                        <div className="card-content">
+                          <div className="card-header">
+                            <div className="payment-icon">
+                              <svg width="24" height="16" viewBox="0 0 24 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect x="0" y="0" width="24" height="16" rx="3" fill="currentColor"/>
+                                <rect x="0" y="5" width="24" height="2" fill="white"/>
+                                <rect x="2" y="9" width="4" height="1" fill="white"/>
+                                <rect x="2" y="11" width="6" height="1" fill="white"/>
+                              </svg>
+                            </div>
+                            <div className="card-title">
+                              {card.cardType || 'Credit Card'}
+                              <span className="card-brand">Visa</span>
+                            </div>
+                            <FormControlLabel
+                              value={card._id}
+                              control={<Radio className="modern-radio" />}
+                              label=""
+                              className="card-radio"
+                            />
+                          </div>
+                          <div className="card-details">
+                            <p className="card-number">•••• •••• •••• {card.cardNumber.slice(-4)}</p>
+                            <div className="card-meta">
+                              <span className="expiry">Exp: {card.expiryDate}</span>
+                              <span className="cardholder">{card.cardHolderName || 'Card Holder'}</span>
+                            </div>
+                          </div>
+                          <div className="card-badge payment-badge">
+                            <span className="badge-text">Default</span>
                           </div>
                         </div>
                       </div>
                     ))}
                   </RadioGroup>
                 ) : (
-                  <div className="empty-state">
-                    <Typography variant="body1" className="empty-message">
-                      No payment methods found. Please add a new card.
-                    </Typography>
+                  <div className="modern-empty-state">
+                    <div className="empty-icon">
+                      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="2" y="4" width="20" height="16" rx="3" stroke="currentColor" strokeWidth="2"/>
+                        <path d="M2 10H22" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+                        <circle cx="12" cy="14" r="1" fill="currentColor"/>
+                      </svg>
+                    </div>
+                    <h4 className="empty-title">No payment methods</h4>
+                    <p className="empty-message">Add a payment method to complete your purchase</p>
+                    <Button variant="contained" onClick={handleAddCard} className="empty-action-btn">
+                      Add Payment Method
+                    </Button>
                   </div>
                 )
               ) : (
-                <div className="loading-state">
-                  <Typography variant="body1">Loading payment methods...</Typography>
+                <div className="modern-loading-state">
+                  <div className="loading-spinner"></div>
+                  <p className="loading-text">Loading payment methods...</p>
                 </div>
               )}
             </div>
