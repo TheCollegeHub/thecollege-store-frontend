@@ -13,6 +13,7 @@ import Checkout from './Components/Checkout/Checkout';
 import OrderCompleted from './Components/OrderCompleted/OrderCompleted';
 import MyOrders from './Components/MyOrders/MyOrders';
 import OrderDetails from './Components/OrderDetails/OrderDetails';
+import MockShowcase from './Pages/MockShowcase';
 export const backend_url = process.env.REACT_APP_BACKEND_HOST || 'http://localhost:4000';
 export const currency = '$';
 
@@ -24,6 +25,7 @@ function App() {
         <Navbar />
         <Routes>
           <Route path="/" element={<Shop gender="all" />} />
+          <Route path="/mock" element={<MockShowcase />} />
           <Route path="/men" element={<ShopCategory banner={men_banner} category="men" />} />
           <Route path="/women" element={<ShopCategory banner={women_banner} category="women" />} />
           <Route path="/kids" element={<ShopCategory banner={kid_banner} category="kid" />} />
