@@ -134,6 +134,15 @@ const CartItems = () => {
             >
               Proceed to Checkout
             </Button>
+            
+            <Button
+              variant="outlined"
+              className="continue-shopping-btn"
+              onClick={() => navigate('/')}
+              fullWidth
+            >
+              Continue Shopping
+            </Button>
           </div>
 
           {/* Cart Items - Right Side */}
