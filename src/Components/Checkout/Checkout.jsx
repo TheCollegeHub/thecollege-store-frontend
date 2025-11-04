@@ -431,9 +431,6 @@ const handleCloseSnackbar = () => {
                               <span className="cardholder">{card.cardHolderName || 'Card Holder'}</span>
                             </div>
                           </div>
-                          <div className="card-badge payment-badge">
-                            <span className="badge-text">Default</span>
-                          </div>
                         </div>
                       </div>
                     ))}
