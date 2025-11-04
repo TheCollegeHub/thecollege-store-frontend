@@ -141,21 +141,21 @@
   box-shadow: var(--shadow-lg) !important;
 }
 
-/* Orders List - Horizontal Layout */
+/* Orders List - Ultra Compact Layout */
 .orders-grid {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-lg);
+  gap: var(--spacing-md);
 }
 
-/* Modern Order Card - Horizontal Layout */
+/* Modern Order Card - Ultra Compact */
 .modern-order-card {
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(20px);
   border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: var(--border-radius-lg);
-  padding: var(--spacing-lg);
-  box-shadow: var(--shadow-md);
+  border-radius: var(--border-radius-md);
+  padding: var(--spacing-md);
+  box-shadow: var(--shadow-sm);
   transition: all var(--transition-standard);
   position: relative;
   overflow: hidden;
@@ -179,53 +179,53 @@
   background: var(--gradient-primary);
 }
 
-/* Card Header - More Compact */
+/* Card Header - Ultra Compact */
 .order-card-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: var(--spacing-md);
-  padding-bottom: var(--spacing-sm);
+  margin-bottom: var(--spacing-sm);
+  padding-bottom: var(--spacing-xs);
   border-bottom: 1px solid var(--border-light);
 }
 
 .order-status {
   display: flex;
   align-items: center;
-  gap: var(--spacing-sm);
+  gap: 6px;
 }
 
 .status-indicator {
-  width: 12px;
-  height: 12px;
+  width: 8px;
+  height: 8px;
   border-radius: var(--border-radius-full);
 }
 
 .status-indicator.completed {
   background: linear-gradient(135deg, #34C759, #30A46C);
-  box-shadow: 0 0 0 3px rgba(52, 199, 89, 0.2);
+  box-shadow: 0 0 0 2px rgba(52, 199, 89, 0.15);
 }
 
 .status-text {
   font-family: var(--font-primary);
-  font-size: 0.875rem;
+  font-size: 0.75rem;
   font-weight: 600;
   color: var(--success-color);
 }
 
 .order-date {
   font-family: var(--font-primary);
-  font-size: 0.875rem;
+  font-size: 0.75rem;
   color: var(--text-secondary);
   font-weight: 500;
 }
 
-/* Card Body - Horizontal Layout */
+/* Card Body - Ultra Compact Layout */
 .order-card-body {
   display: flex;
   align-items: center;
-  gap: var(--spacing-xl);
-  margin-bottom: var(--spacing-md);
+  gap: var(--spacing-lg);
+  margin-bottom: var(--spacing-sm);
 }
 
 .order-number {
@@ -234,28 +234,28 @@
 
 .order-number .label {
   font-family: var(--font-primary);
-  font-size: 0.875rem;
+  font-size: 0.75rem;
   color: var(--text-secondary);
   display: block;
-  margin-bottom: var(--spacing-xs);
+  margin-bottom: 2px;
 }
 
 .order-number .value {
   font-family: var(--font-primary);
-  font-size: 1.25rem;
+  font-size: 1.125rem;
   font-weight: 700;
   color: var(--text-primary);
-  letter-spacing: -0.5px;
+  letter-spacing: -0.3px;
 }
 
 .order-stats {
   display: flex;
   align-items: center;
   background: rgba(248, 249, 250, 0.7);
-  border-radius: var(--border-radius-lg);
-  padding: var(--spacing-md);
+  border-radius: var(--border-radius-md);
+  padding: var(--spacing-sm);
   flex-shrink: 0;
-  min-width: 200px;
+  min-width: 180px;
 }
 
 .stat-item {
@@ -265,35 +265,35 @@
 
 .stat-value {
   font-family: var(--font-primary);
-  font-size: 1.5rem;
+  font-size: 1.125rem;
   font-weight: 700;
   color: var(--primary-color);
   display: block;
-  margin-bottom: var(--spacing-xs);
+  margin-bottom: 2px;
 }
 
 .stat-label {
   font-family: var(--font-primary);
-  font-size: 0.8125rem;
+  font-size: 0.6875rem;
   color: var(--text-secondary);
   font-weight: 500;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.3px;
 }
 
 .stat-divider {
   width: 1px;
-  height: 40px;
+  height: 30px;
   background: var(--border-medium);
-  margin: 0 var(--spacing-lg);
+  margin: 0 var(--spacing-md);
 }
 
-/* Card Footer - Horizontal Layout */
+/* Card Footer - Ultra Compact */
 .order-card-footer {
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  padding-top: var(--spacing-md);
+  padding-top: var(--spacing-sm);
   border-top: 1px solid var(--border-light);
 }
 
@@ -301,15 +301,15 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: var(--spacing-sm);
-  padding: var(--spacing-sm) var(--spacing-lg);
+  gap: 4px;
+  padding: 6px var(--spacing-md);
   background: transparent;
-  border: 2px solid var(--primary-color);
+  border: 1px solid var(--primary-color);
   color: var(--primary-color);
   font-family: var(--font-primary);
   font-weight: 600;
-  font-size: 0.875rem;
-  border-radius: var(--border-radius-lg);
+  font-size: 0.75rem;
+  border-radius: var(--border-radius-sm);
   text-decoration: none;
   transition: all var(--transition-standard);
   flex-shrink: 0;
