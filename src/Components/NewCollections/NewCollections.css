@@ -4,7 +4,7 @@
     align-items: center;
     padding: var(--spacing-xxxl) var(--spacing-lg);
     margin-bottom: var(--spacing-xxxl);
-    background: transparent;
+    background: rgba(248, 249, 250, 0.3);
 }
 
 .new-collections h1 {
@@ -39,12 +39,11 @@
 .collections {
     width: 100%;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: var(--spacing-xl);
     max-width: 1400px;
     margin: 0 auto;
     padding: 0 var(--spacing-md);
-    align-items: stretch;
 }
 
 /* Media Queries */
