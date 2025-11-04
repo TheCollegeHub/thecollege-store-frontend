@@ -1,8 +1,49 @@
-.shop-container {
-  padding: 20px; /* Espaçamento interno geral */
+/* Shop Page Styling */
+.shop-page {
+  background: var(--background-primary);
 }
 
-/* Ajustes específicos para o Hero */
-.hero {
-  margin-top: 20px; /* Espaçamento entre o carousel e o Hero */
+.shop-content {
+  margin-top: var(--spacing-lg);
+}
+
+.shop-page .new-collections {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .welcome-section {
+    margin: var(--spacing-lg) var(--spacing-md) var(--spacing-xl);
+    padding: var(--spacing-lg) var(--spacing-md);
+  }
+  
+  .welcome-title {
+    font-size: clamp(20px, 5vw, 28px);
+  }
+  
+  .welcome-subtitle {
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 500px) {
+  .welcome-section {
+    margin: var(--spacing-md) var(--spacing-sm) var(--spacing-lg);
+    padding: var(--spacing-md) var(--spacing-sm);
+  }
+  
+  .welcome-title {
+    font-size: clamp(18px, 6vw, 24px);
+  }
+  
+  .welcome-subtitle {
+    font-size: 14px;
+  }
+}
+
+/* Legacy container styles */
+.shop-container {
+  padding: 20px;
 }

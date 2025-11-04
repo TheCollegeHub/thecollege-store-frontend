@@ -7,6 +7,7 @@ import image1 from "../Assets/bannerHome1.png";
 import image2 from "../Assets/bannerHome2.png";
 
 const images = [image1, image2];
+
 const ImageCarousel = () => {
   return (
     <div className="modern-carousel-wrapper">

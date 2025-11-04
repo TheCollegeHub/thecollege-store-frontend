@@ -92,8 +92,10 @@ const Navbar = () => {
               </Menu>
             </>
           : <Link to='/login' style={{ textDecoration: 'none' }}><button data-qa-label="button-login">Login</button></Link>}
-        <Link data-qa-locator={"cart-button"} to="/cart"><img src={cart_icon} alt="cart" /></Link>
-        <div id='cart-items' className="nav-cart-count">{getTotalCartItems()}</div>
+        <div className="cart-container">
+          <Link data-qa-locator={"cart-button"} to="/cart"><img src={cart_icon} alt="cart" /></Link>
+          <div id='cart-items' className="nav-cart-count">{getTotalCartItems()}</div>
+        </div>
       </div>
     </div>
   );
