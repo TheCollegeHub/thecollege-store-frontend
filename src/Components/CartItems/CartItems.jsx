@@ -4,7 +4,7 @@ import "./CartItems.css";
 import cross_icon from "../Assets/cart_cross_icon.png";
 import { ShopContext } from "../../Context/ShopContext";
 import { backend_url, currency } from "../../App";
-import { Button, Container, Typography } from '@mui/material';
+import { Button, Typography } from '@mui/material';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 
 const CartItems = () => {
@@ -53,97 +53,129 @@ const CartItems = () => {
   const hasCartItems = products.some(e => cartItems[e.id] > 0);
 
   return (
-    <Container className="cartitems">
+    <div className="modern-cart-container">
       {hasCartItems ? (
-        <>
-          <div className="cartitems-format-main">
-            <p>Products</p>
-            <p>Title</p>
-            <p>Price</p>
-            <p>Quantity</p>
-            <p>Total</p>
-            <p>Remove</p>
-          </div>
-          <hr />
-          {products.map((e) => {
-            if (cartItems[e.id] > 0) {
-              return (
-                <div key={e.id}>
-                  <div data-qa-label={"product-item-cart"} className="cartitems-format-main cartitems-format">
-                    <img className="cartitems-product-icon" src={backend_url + e.image} alt="" />
-                    <p className="cartitems-product-title">{e.name}</p>
-                    <p>{currency}{e.new_price}</p>
-                    <button className="cartitems-quantity">{cartItems[e.id]}</button>
-                    <p>{currency}{e.new_price * cartItems[e.id]}</p>
-                    <img onClick={() => handleRemoveFromCart(e.id)} className="cartitems-remove-icon" src={cross_icon} alt="" />
-                  </div>
-                  <hr />
-                </div>
-              );
-            }
-            return null;
-          })}
-
-          <div className="cartitems-down">
-            <div className="cartitems-total">
-              <Typography variant="h4">Cart Totals</Typography>
-              <div>
-                <div className="cartitems-total-item">
-                  <p>Subtotal</p>
-                  <p>{currency}{getTotalCartAmount()}</p>
-                </div>
-                <hr />
-                <div className="cartitems-total-item">
-                  <p>Shipping Fee</p>
-                  <p>Free</p>
-                </div>
-                <hr />
-                {discountPercentage > 0 && (
-                  <div className="cartitems-total-item">
-                    <p>Discount ({discountPercentage}%)</p>
-                    <p>-{currency}{getTotalCartAmount() * discountPercentage / 100}</p>
-                    <Button
-                      variant="contained"
-                      color="secondary"
-                      className="remove-discount-button"
-                      onClick={handleRemoveDiscount}
-                      sx={{ borderRadius: '20px', backgroundColor: '#D1C4E9' }}
-                    >
-                      Remove Discount
-                    </Button>
-                  </div>
-                )}
-                <div className="cartitems-total-item">
-                  <h3>Total</h3>
-                  <h3>{currency}{getTotalAfterDiscount()}</h3>
-                </div>
-              </div>
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={() => navigate('/checkout')}
-              >
-                PROCEED TO CHECKOUT
-              </Button>
+        <div className="cart-layout">
+          {/* Order Summary - Left Side */}
+          <div className="order-summary">
+            <div className="summary-header">
+              <Typography variant="h4" className="summary-title">Order Summary</Typography>
+              <Typography variant="body2" className="summary-items">
+                {Object.values(cartItems).reduce((a, b) => a + b, 0)} items
+              </Typography>
             </div>
-            <div className="cartitems-promocode">
-              <p>If you have a promo code, enter it here</p>
-              <div className="cartitems-promobox">
-                <input 
+
+            <div className="summary-details">
+              <div className="summary-row">
+                <span>Subtotal</span>
+                <span>{currency}{getTotalCartAmount()}</span>
+              </div>
+              <div className="summary-row">
+                <span>Shipping</span>
+                <span className="free-shipping">Free</span>
+              </div>
+              {discountPercentage > 0 && (
+                <div className="summary-row discount-row">
+                  <span>Discount ({discountPercentage}%)</span>
+                  <span className="discount-amount">-{currency}{(getTotalCartAmount() * discountPercentage / 100).toFixed(2)}</span>
+                  <button
+                    className="remove-discount-btn"
+                    onClick={handleRemoveDiscount}
+                    title="Remove discount"
+                  >
+                    ×
+                  </button>
+                </div>
+              )}
+              <hr className="summary-divider" />
+              <div className="summary-row total-row">
+                <span>Total</span>
+                <span>{currency}{getTotalAfterDiscount().toFixed(2)}</span>
+              </div>
+            </div>
+
+            <div className="promo-section">
+              <Typography variant="h6" className="promo-title">Promo Code</Typography>
+              <div className="promo-input-container">
+                <input
                   data-qa-locator={"promo-code-input"}
-                  type="text" 
-                  placeholder="Promo code" 
+                  type="text"
+                  placeholder="Enter discount code"
                   value={discountCode}
                   onChange={(e) => setDiscountCode(e.target.value)}
+                  className="promo-input"
                 />
-                <Button id="submit-button"  variant="contained" color="primary" onClick={handleDiscountSubmit}>Submit</Button>
+                <button
+                  id="submit-button"
+                  className="apply-promo-btn"
+                  onClick={handleDiscountSubmit}
+                  disabled={!discountCode.trim()}
+                >
+                  Apply
+                </button>
               </div>
               {discountAppliedMessage && (
-                <p name={"discount-message"} className={discountAppliedMessage.includes("Invalid") || discountAppliedMessage.includes("already") ? "invalid-code" : ""}>{discountAppliedMessage}</p>
+                <div className={`promo-message ${
+                  discountAppliedMessage.includes("Invalid") || 
+                  discountAppliedMessage.includes("already") || 
+                  discountAppliedMessage.includes("wrong") 
+                    ? "error" : "success"
+                }`}>
+                  {discountAppliedMessage}
+                </div>
               )}
             </div>
+
+            <Button
+              variant="contained"
+              className="checkout-btn"
+              onClick={() => navigate('/checkout')}
+              fullWidth
+            >
+              Proceed to Checkout
+            </Button>
           </div>
-        </>
+
+          {/* Cart Items - Right Side */}
+          <div className="cart-items-section">
+            <div className="cart-header">
+              <Typography variant="h4" className="cart-title">Shopping Cart</Typography>
+            </div>
+
+            <div className="cart-items-list">
+              {products.map((product) => {
+                if (cartItems[product.id] > 0) {
+                  return (
+                    <div key={product.id} className="cart-item" data-qa-label={"product-item-cart"}>
+                      <div className="item-image">
+                        <img src={backend_url + product.image} alt={product.name} />
+                      </div>
+                      <div className="item-details">
+                        <h3 className="item-name">{product.name}</h3>
+                        <p className="item-price">{currency}{product.new_price}</p>
+                        <div className="item-quantity">
+                          <span>Quantity: </span>
+                          <span className="quantity-badge">{cartItems[product.id]}</span>
+                        </div>
+                      </div>
+                      <div className="item-total">
+                        <div className="total-price">{currency}{(product.new_price * cartItems[product.id]).toFixed(2)}</div>
+                        <button
+                          className="remove-item-btn"
+                          onClick={() => handleRemoveFromCart(product.id)}
+                          title="Remove item"
+                        >
+                          <img src={cross_icon} alt="Remove" />
+                        </button>
+                      </div>
+                    </div>
+                  );
+                }
+                return null;
+              })}
+            </div>
+          </div>
+        </div>
       ) : (
         <div className="empty-cart">
           <ShoppingCartIcon style={{ fontSize: 100, color: "#ccc" }} />
@@ -165,7 +197,7 @@ const CartItems = () => {
           </div>
         </div>
       )}
-    </Container>
+    </div>
   );
 };
 
