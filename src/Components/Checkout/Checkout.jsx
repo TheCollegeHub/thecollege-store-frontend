@@ -224,99 +224,174 @@ const handleCloseSnackbar = () => {
   
 
   return (
-    <Container>
-      <Paper className="checkout-paper">
-        <Typography variant="h4" gutterBottom>Checkout</Typography>
+    <>
+      <div className="modern-checkout-container">
+        <div className="checkout-layout">
+        {/* Order Summary - Left Side */}
+        <div className="checkout-summary-panel">
+          <div className="summary-header">
+            <Typography variant="h4" className="checkout-title">Order Summary</Typography>
+            <Typography variant="body2" className="summary-items">
+              {Object.values(cartItems).reduce((a, b) => a + b, 0)} items
+            </Typography>
+          </div>
 
-        <Grid container spacing={4}>
-          <Grid item xs={12} md={8}>
-            <Grid container spacing={2}>
-              <Grid item xs={12}>
-                <FormControl component="fieldset" className="checkout-section">
-                  <FormLabel component="legend">Delivery Address</FormLabel>
-                  {addressesLoaded ? (
-                    addresses.length > 0 ? (
-                      <RadioGroup value={selectedAddress} onChange={(e) => setSelectedAddress(e.target.value)}>
-                        {addresses.map((address) => (
-                          <FormControlLabel
-                            key={address._id}
-                            value={address._id}
-                            control={<Radio />}
-                            label={
-                              <Typography variant="body2">
-                              {`${address.street}, ${address.city}, ${address.state}, ${address.zip}`}
-                              </Typography>
-                            }
-                          />
-                        ))}
-                      </RadioGroup>
-                    ) : (
-                      <Typography variant="body1">No addresses found. Please add a new address.</Typography>
-                    )
-                  ) : (
-                    <Typography variant="body1">Loading addresses...</Typography>
-                  )}
-                  <Button variant="contained" color="primary" size="small" style={{ width: '160px' }} onClick={handleAddAddress}>
-                    Add New Address
-                  </Button>
-                </FormControl>
-              </Grid>
-              <Grid item xs={12}>
-                <FormControl component="fieldset" className="checkout-section">
-                  <FormLabel component="legend">Payment Method</FormLabel>
-                  {cardsLoaded ? (
-                    cards.length > 0 ? (
-                      <RadioGroup value={selectedCard} onChange={(e) => setSelectedCard(e.target.value)}>
-                        {cards.map((card) => (
-                          <FormControlLabel
-                            key={card._id}
-                            value={card._id}
-                            control={<Radio />}
-              
-                            label={
-                            <Typography variant="body2">
-                            {`Card: ****-****-****-${card.cardNumber.slice(-4)} | Expiration: ${card.expiryDate}`}
-                            </Typography>
-                            }
-                          />
-                        ))}
-                      </RadioGroup>
-                    ) : (
-                      <Typography variant="body1">No cards found. Please add a new card.</Typography>
-                    )
-                  ) : (
-                    <Typography variant="body1">Loading cards...</Typography>
-                  )}
-                  <Button variant="contained" color="primary" size="small" style={{ width: '130px' }} onClick={handleAddCard}>
-                    Add New Card
-                  </Button>
-                </FormControl>
-              </Grid>
-            </Grid>
-          </Grid>
+          <div className="summary-details">
+            <div className="summary-row">
+              <span>Subtotal</span>
+              <span>{currency}{getTotalCartAmount()}</span>
+            </div>
+            <div className="summary-row">
+              <span>Shipping</span>
+              <span className="free-shipping">Free</span>
+            </div>
+            {discountPercentage > 0 && (
+              <div className="summary-row discount-row">
+                <span>Discount ({discountPercentage}%)</span>
+                <span className="discount-amount">-{currency}{(getTotalCartAmount() * discountPercentage / 100).toFixed(2)}</span>
+              </div>
+            )}
+            <hr className="summary-divider" />
+            <div className="summary-row total-row">
+              <span>Total</span>
+              <span>{currency}{getTotalAfterDiscount().toFixed(2)}</span>
+            </div>
+          </div>
 
-          <Grid item xs={12} md={4} className="order-summary-container">
-            <div className="checkout-summary">
-              <Typography variant="h6">Order Summary</Typography>
-              <Typography variant="body1">Subtotal: {currency}{getTotalCartAmount()}</Typography>
-              {discountPercentage > 0 && (
-                <Typography variant="body1">Discount: {currency}{(getTotalCartAmount() * discountPercentage / 100).toFixed(2)}</Typography>
-              )}
-              <Typography variant="h5">Total: {currency}{getTotalAfterDiscount().toFixed(2)}</Typography>
-              <Button variant="contained" color="secondary" onClick={handlePayment}>
-                Make Payment
+          <div className="payment-actions">
+            <Button
+              variant="contained"
+              className="payment-btn"
+              onClick={handlePayment}
+              fullWidth
+            >
+              Complete Payment
+            </Button>
+            <Button
+              variant="outlined"
+              className="back-to-cart-btn"
+              onClick={() => navigate('/cart')}
+              fullWidth
+            >
+              Back to Cart
+            </Button>
+          </div>
+        </div>
+
+        {/* Checkout Form - Right Side */}
+        <div className="checkout-form-section">
+          <div className="checkout-header">
+            <Typography variant="h4" className="form-title">Checkout Details</Typography>
+          </div>
+
+          {/* Delivery Address Section */}
+          <div className="checkout-section">
+            <div className="section-header">
+              <Typography variant="h6" className="section-title">Delivery Address</Typography>
+              <Button 
+                variant="outlined" 
+                className="add-btn"
+                onClick={handleAddAddress}
+              >
+                + Add New
               </Button>
             </div>
-          </Grid>
-        </Grid>
-        <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleCloseSnackbar}>
+            
+            <div className="options-container">
+              {addressesLoaded ? (
+                addresses.length > 0 ? (
+                  <RadioGroup value={selectedAddress} onChange={(e) => setSelectedAddress(e.target.value)}>
+                    {addresses.map((address) => (
+                      <div key={address._id} className="option-card">
+                        <FormControlLabel
+                          value={address._id}
+                          control={<Radio />}
+                          label=""
+                          className="option-radio"
+                        />
+                        <div className="option-content">
+                          <div className="option-title">Home Address</div>
+                          <div className="option-details">
+                            {`${address.street}, ${address.city}, ${address.state}, ${address.zip}`}
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </RadioGroup>
+                ) : (
+                  <div className="empty-state">
+                    <Typography variant="body1" className="empty-message">
+                      No addresses found. Please add a new address.
+                    </Typography>
+                  </div>
+                )
+              ) : (
+                <div className="loading-state">
+                  <Typography variant="body1">Loading addresses...</Typography>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Payment Method Section */}
+          <div className="checkout-section">
+            <div className="section-header">
+              <Typography variant="h6" className="section-title">Payment Method</Typography>
+              <Button 
+                variant="outlined" 
+                className="add-btn"
+                onClick={handleAddCard}
+              >
+                + Add New
+              </Button>
+            </div>
+            
+            <div className="options-container">
+              {cardsLoaded ? (
+                cards.length > 0 ? (
+                  <RadioGroup value={selectedCard} onChange={(e) => setSelectedCard(e.target.value)}>
+                    {cards.map((card) => (
+                      <div key={card._id} className="option-card">
+                        <FormControlLabel
+                          value={card._id}
+                          control={<Radio />}
+                          label=""
+                          className="option-radio"
+                        />
+                        <div className="option-content">
+                          <div className="option-title">Credit Card</div>
+                          <div className="option-details">
+                            ****-****-****-{card.cardNumber.slice(-4)} | Exp: {card.expiryDate}
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </RadioGroup>
+                ) : (
+                  <div className="empty-state">
+                    <Typography variant="body1" className="empty-message">
+                      No payment methods found. Please add a new card.
+                    </Typography>
+                  </div>
+                )
+              ) : (
+                <div className="loading-state">
+                  <Typography variant="body1">Loading payment methods...</Typography>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleCloseSnackbar}>
         <Alert onClose={handleCloseSnackbar} severity="error" sx={{ width: '100%' }}>
           {errorMessage}
         </Alert>
       </Snackbar>
-      </Paper>
 
-       <Modal
+      <Modal
         open={isAddAddressOpen}
         onClose={handleCloseAddAddress}
         aria-labelledby="modal-title"
@@ -424,9 +499,7 @@ const handleCloseSnackbar = () => {
           </form>
         </Paper>
       </Modal>
-
-
-    </Container>
+    </>
   );
 };
 
