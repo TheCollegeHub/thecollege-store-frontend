@@ -69,48 +69,42 @@ const MyOrders = () => {
           <div className="orders-grid">
             {orders.map(order => (
               <div key={order.id} className="modern-order-card">
-                <div className="order-card-header">
-                  <div className="order-status">
-                    <div className="status-indicator completed"></div>
-                    <span className="status-text">Completed</span>
-                  </div>
-                  <div className="order-date">
-                    {new Date(order.date).toLocaleDateString('en-US', { 
-                      year: 'numeric', 
-                      month: 'short', 
-                      day: 'numeric' 
-                    })}
-                  </div>
-                </div>
-
-                <div className="order-card-body">
-                  <div className="order-number">
-                    <span className="label">Order</span>
-                    <span className="value">#{order.orderNumber}</span>
-                  </div>
-                  
-                  <div className="order-stats">
-                    <div className="stat-item">
-                      <span className="stat-value">${order.finalAmount}</span>
-                      <span className="stat-label">Total Paid</span>
+                <div className="order-main-content">
+                  <div className="order-left-section">
+                    <div className="order-badge">
+                      <div className="status-dot completed"></div>
+                      <span className="order-id">#{order.orderNumber}</span>
                     </div>
-                    <div className="stat-divider"></div>
-                    <div className="stat-item">
-                      <span className="stat-value">
-                        {Object.values(order.cartItems[0]).filter(quantity => quantity > 0).length}
+                    <div className="order-meta">
+                      <span className="order-date-text">
+                        {new Date(order.date).toLocaleDateString('en-US', { 
+                          month: 'short', 
+                          day: 'numeric',
+                          year: 'numeric'
+                        })}
                       </span>
-                      <span className="stat-label">Items</span>
+                      <span className="meta-separator">•</span>
+                      <span className="order-items-count">
+                        {Object.values(order.cartItems[0]).filter(quantity => quantity > 0).length} items
+                      </span>
                     </div>
                   </div>
-                </div>
 
-                <div className="order-card-footer">
-                  <Link to={`/order/${order._id}`} className="view-details-btn">
-                    <span>View Details</span>
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M9 18L15 12L9 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
-                  </Link>
+                  <div className="order-center-section">
+                    <div className="order-amount">
+                      <span className="amount-label">Total</span>
+                      <span className="amount-value">${order.finalAmount}</span>
+                    </div>
+                  </div>
+
+                  <div className="order-right-section">
+                    <Link to={`/order/${order._id}`} className="modern-details-btn">
+                      <span>Details</span>
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M9 18L15 12L9 6" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+                      </svg>
+                    </Link>
+                  </div>
                 </div>
               </div>
             ))}
