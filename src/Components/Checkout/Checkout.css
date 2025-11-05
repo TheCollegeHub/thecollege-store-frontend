@@ -403,10 +403,12 @@
   font-size: 0.75rem;
   font-weight: 600;
   font-family: var(--font-primary);
+  z-index: 1;
 }
 
 .payment-badge {
   background: linear-gradient(135deg, #34C759, #30A46C);
+  z-index: 1;
 }
 
 .badge-text {
@@ -414,11 +416,31 @@
   letter-spacing: 0.5px;
 }
 
-/* Selected State */
+/* Selected State - Keep Card Appearance */
 .modern-option-card:has(.Mui-checked) {
   border-color: var(--primary-color);
-  background: rgba(var(--primary-rgb), 0.08);
-  box-shadow: 0 0 0 3px rgba(var(--primary-rgb), 0.1);
+  border-width: 2px;
+  box-shadow: 0 4px 12px rgba(var(--primary-rgb), 0.15), 0 0 0 3px rgba(var(--primary-rgb), 0.1);
+  position: relative;
+}
+
+.modern-option-card:has(.Mui-checked)::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: linear-gradient(180deg, var(--primary-color), var(--primary-dark));
+  border-radius: var(--border-radius-lg) 0 0 var(--border-radius-lg);
+}
+
+.modern-option-card.address-card:has(.Mui-checked) {
+  background: linear-gradient(135deg, rgba(52, 120, 246, 0.08), rgba(248, 249, 250, 0.95));
+}
+
+.modern-option-card.payment-card:has(.Mui-checked) {
+  background: linear-gradient(135deg, rgba(52, 120, 246, 0.1), rgba(255, 255, 255, 0.95));
 }
 
 .address-option,
