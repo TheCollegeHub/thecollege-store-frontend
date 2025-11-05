@@ -510,10 +510,12 @@ const handleCloseSnackbar = () => {
               )}
             </div>
           </div>
+        </div>
 
-          {/* Recommendations Section */}
-          {!loadingRecommendations && recommendedProducts.length > 0 && (
-            <div className="checkout-section recommendations-section">
+        {/* Recommendations Section - Separate Card */}
+        {!loadingRecommendations && recommendedProducts.length > 0 && (
+          <div className="recommendations-wrapper">
+            <div className="checkout-section recommendations-section standalone-recommendations">
               <div className="section-header">
                 <div className="section-title-container">
                   <div className="section-icon">
@@ -544,8 +546,8 @@ const handleCloseSnackbar = () => {
                 ))}
               </div>
             </div>
-          )}
-        </div>
+          </div>
+        )}
       </div>
     </div>
 
