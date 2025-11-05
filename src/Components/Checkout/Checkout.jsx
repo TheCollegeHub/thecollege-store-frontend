@@ -217,16 +217,25 @@ const handleCloseSnackbar = () => {
     } else if (response.status === 400) {
       // Handle out of stock products
       const errorData = await response.json();
-      console.error('Out of stock products:', errorData);
+      console.log('Stock error response:', errorData);
       
-      // Redirect to cart with out-of-stock product information
-      navigate('/cart', { 
-        state: { 
-          outOfStockProducts: errorData.outOfStockProducts || [],
-          orderNumber: errorData.orderNumber,
-          message: errorData.message || 'Some products are out of stock'
-        } 
-      });
+      // Check if this is a stock error
+      if (errorData.error === 'PRODUCTS_WITHOUT_STOCK' && errorData.unavailableProducts) {
+        // Redirect to cart with out-of-stock product information
+        navigate('/cart', { 
+          state: { 
+            outOfStockProducts: errorData.unavailableProducts,
+            errorType: errorData.error,
+            message: 'Some products in your cart are out of stock'
+          } 
+        });
+      } else {
+        // Other 400 errors
+        console.error('Bad request:', errorData);
+        setError(true);
+        setErrorMessage(errorData.message || 'Failed to create order. Please try again.');
+        setOpenSnackbar(true);
+      }
     } else {
       console.error('Failed to create order');
       setError(true);

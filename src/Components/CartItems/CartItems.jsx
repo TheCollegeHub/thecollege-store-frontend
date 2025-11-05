@@ -20,10 +20,20 @@ const CartItems = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
+  const showToastNotification = (message) => {
+    setToastMessage(message);
+    setShowToast(true);
+    setTimeout(() => setShowToast(false), 3000);
+  };
+
   // Check for out-of-stock products from checkout redirect
   useEffect(() => {
     if (location.state?.outOfStockProducts) {
+      console.log('Received out-of-stock products:', location.state.outOfStockProducts);
       setOutOfStockProducts(location.state.outOfStockProducts);
+      
+      // Show toast notification
+      showToastNotification(`${location.state.outOfStockProducts.length} product(s) are out of stock`);
       
       // Clear the location state after reading it
       window.history.replaceState({}, document.title);
@@ -31,14 +41,9 @@ const CartItems = () => {
   }, [location]);
 
   const isProductOutOfStock = (productId) => {
-    return outOfStockProducts.some(item => item.id === productId || item.productId === productId);
-  };
-
-
-  const showToastNotification = (message) => {
-    setToastMessage(message);
-    setShowToast(true);
-    setTimeout(() => setShowToast(false), 3000);
+    const isOutOfStock = outOfStockProducts.some(item => item.id === productId || item.productId === productId);
+    console.log(`Checking product ${productId}:`, isOutOfStock, outOfStockProducts);
+    return isOutOfStock;
   };
 
   const handleRemoveFromCart = (itemId) => {
