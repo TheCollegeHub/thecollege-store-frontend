@@ -342,9 +342,6 @@ const handleCloseSnackbar = () => {
                             <p className="address-line">{address.street}</p>
                             <p className="address-line">{address.city}, {address.state} {address.zip}</p>
                           </div>
-                          <div className="card-badge">
-                            <span className="badge-text">Primary</span>
-                          </div>
                         </div>
                       </div>
                     ))}
