@@ -4,16 +4,17 @@ import star_icon from "../Assets/star_icon.png";
 import star_dull_icon from "../Assets/star_dull_icon.png";
 import { ShopContext } from "../../Context/ShopContext";
 import { backend_url, currency } from "../../App";
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
 const ProductDisplay = ({ product }) => {
   const { addToCart } = useContext(ShopContext);
-  const [showModal, setShowModal] = useState(false);
+  const [showToast, setShowToast] = useState(false);
 
   const handleAddToCart = async (productId) => {
     const response = await addToCart(productId);
     if (response && response.status === 200) {
-      setShowModal(true);
-      setTimeout(() => setShowModal(false), 3000); // Modal will disappear after 3 seconds
+      setShowToast(true);
+      setTimeout(() => setShowToast(false), 3000);
     }
   };
 
@@ -61,10 +62,11 @@ const ProductDisplay = ({ product }) => {
         <p className="productdisplay-right-category"><span>Category :</span> Women, T-shirt, Crop Top</p>
         <p className="productdisplay-right-category"><span>Tags :</span> Modern, Latest</p>
       </div>
-      {showModal && (
-        <div data-qa-locator={'modal'} className="modal">
-          <div className="modal-content">
-            <p data-qa-locator={'modal-message'}>Product added to cart successfully!</p>
+      {showToast && (
+        <div data-qa-locator={'toast'} className="toast-notification">
+          <div className="toast-content">
+            <CheckCircleIcon className="toast-icon" />
+            <p data-qa-locator={'toast-message'} className="toast-message">Product added to cart successfully!</p>
           </div>
         </div>
       )}

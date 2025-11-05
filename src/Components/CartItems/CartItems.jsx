@@ -6,19 +6,26 @@ import { ShopContext } from "../../Context/ShopContext";
 import { backend_url, currency } from "../../App";
 import { Button, Typography } from '@mui/material';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
 const CartItems = () => {
   const { products, cartItems, removeFromCart, getTotalCartAmount, applyDiscount } = useContext(ShopContext);
-  const [showModal, setShowModal] = useState(false);
+  const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
   const [discountCode, setDiscountCode] = useState("");
   const [discountPercentage, setDiscountPercentage] = useState(0);
   const [discountAppliedMessage, setDiscountAppliedMessage] = useState("");
   const navigate = useNavigate();
 
+  const showToastNotification = (message) => {
+    setToastMessage(message);
+    setShowToast(true);
+    setTimeout(() => setShowToast(false), 3000);
+  };
+
   const handleRemoveFromCart = (itemId) => {
     removeFromCart(itemId);
-    setShowModal(true);
-    setTimeout(() => setShowModal(false), 3000); // Modal will disappear after 3 seconds
+    showToastNotification("Product removed from cart successfully!");
   };
 
   const handleDiscountSubmit = async () => {
@@ -199,10 +206,11 @@ const CartItems = () => {
           </Button>
         </div>
       )}
-      {showModal && (
-        <div className="modal">
-          <div className="modal-content">
-            <p>Product removed from cart successfully!</p>
+      {showToast && (
+        <div className="toast-notification">
+          <div className="toast-content">
+            <CheckCircleIcon className="toast-icon" />
+            <p className="toast-message">{toastMessage}</p>
           </div>
         </div>
       )}
