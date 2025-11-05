@@ -270,6 +270,26 @@
     font-size: 28px !important;
 }
 
+/* Out of Stock Alert */
+.out-of-stock-alert {
+    margin-bottom: var(--spacing-lg);
+    border-radius: var(--border-radius-lg) !important;
+    background: rgba(255, 59, 48, 0.05) !important;
+    border: 1px solid rgba(255, 59, 48, 0.2) !important;
+    animation: slideInDown 0.4s ease-out;
+}
+
+@keyframes slideInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 /* Individual Cart Item */
 .cart-item {
     display: flex;
@@ -289,8 +309,21 @@
     border-color: var(--primary-color);
 }
 
+/* Out of Stock Item Styling */
+.cart-item.out-of-stock-item {
+    opacity: 0.7;
+    border-color: rgba(255, 59, 48, 0.3);
+    background: rgba(255, 59, 48, 0.02);
+}
+
+.cart-item.out-of-stock-item:hover {
+    border-color: rgba(255, 59, 48, 0.5);
+    transform: translateY(0);
+}
+
 .item-image {
     flex-shrink: 0;
+    position: relative;
 }
 
 .item-image img {
@@ -298,7 +331,46 @@
     height: 100px;
     object-fit: cover;
     border-radius: var(--border-radius-md);
-    box-shadow: var(--shadow-sm);
+}
+
+.out-of-stock-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 59, 48, 0.85);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--border-radius-md);
+    color: white;
+    font-family: var(--font-secondary);
+    font-size: 0.75rem;
+    font-weight: 700;
+    gap: 4px;
+    text-align: center;
+    padding: 4px;
+}
+
+.out-of-stock-overlay svg {
+    font-size: 24px;
+}
+
+.stock-warning {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: var(--spacing-sm);
+    color: #ff3b30;
+    font-family: var(--font-primary);
+    font-size: 0.8125rem;
+    font-weight: 600;
+}
+
+.stock-warning svg {
+    font-size: 18px !important;
 }
 
 .item-details {
@@ -421,6 +493,19 @@
     .item-image img {
         width: 80px;
         height: 80px;
+    }
+    
+    .out-of-stock-overlay {
+        font-size: 0.625rem;
+    }
+    
+    .out-of-stock-overlay svg {
+        font-size: 20px;
+    }
+    
+    .stock-warning {
+        justify-content: center;
+        font-size: 0.75rem;
     }
     
     .item-details {

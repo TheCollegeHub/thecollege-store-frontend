@@ -214,6 +214,19 @@ const handleCloseSnackbar = () => {
     if (response.ok) {
       const data = await response.json();
       navigate('/order-completed', { state: { order: data.order } });
+    } else if (response.status === 400) {
+      // Handle out of stock products
+      const errorData = await response.json();
+      console.error('Out of stock products:', errorData);
+      
+      // Redirect to cart with out-of-stock product information
+      navigate('/cart', { 
+        state: { 
+          outOfStockProducts: errorData.outOfStockProducts || [],
+          orderNumber: errorData.orderNumber,
+          message: errorData.message || 'Some products are out of stock'
+        } 
+      });
     } else {
       console.error('Failed to create order');
       setError(true);

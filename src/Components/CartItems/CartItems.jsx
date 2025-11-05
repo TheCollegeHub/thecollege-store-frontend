@@ -1,12 +1,13 @@
-import React, { useContext, useState } from "react";
-import { useNavigate } from 'react-router-dom';
+import React, { useContext, useState, useEffect } from "react";
+import { useNavigate, useLocation } from 'react-router-dom';
 import "./CartItems.css";
 import cross_icon from "../Assets/cart_cross_icon.png";
 import { ShopContext } from "../../Context/ShopContext";
 import { backend_url, currency } from "../../App";
-import { Button, Typography } from '@mui/material';
+import { Button, Typography, Alert } from '@mui/material';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import WarningAmberIcon from '@mui/icons-material/WarningAmber';
 
 const CartItems = () => {
   const { products, cartItems, removeFromCart, getTotalCartAmount, applyDiscount } = useContext(ShopContext);
@@ -15,7 +16,24 @@ const CartItems = () => {
   const [discountCode, setDiscountCode] = useState("");
   const [discountPercentage, setDiscountPercentage] = useState(0);
   const [discountAppliedMessage, setDiscountAppliedMessage] = useState("");
+  const [outOfStockProducts, setOutOfStockProducts] = useState([]);
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // Check for out-of-stock products from checkout redirect
+  useEffect(() => {
+    if (location.state?.outOfStockProducts) {
+      setOutOfStockProducts(location.state.outOfStockProducts);
+      
+      // Clear the location state after reading it
+      window.history.replaceState({}, document.title);
+    }
+  }, [location]);
+
+  const isProductOutOfStock = (productId) => {
+    return outOfStockProducts.some(item => item.id === productId || item.productId === productId);
+  };
+
 
   const showToastNotification = (message) => {
     setToastMessage(message);
@@ -158,13 +176,37 @@ const CartItems = () => {
               <Typography variant="h4" className="cart-title">Shopping Cart</Typography>
             </div>
 
+            {/* Out of Stock Alert */}
+            {outOfStockProducts.length > 0 && (
+              <Alert severity="error" className="out-of-stock-alert" icon={<WarningAmberIcon />}>
+                <Typography variant="subtitle1" fontWeight="bold" mb={1}>
+                  Some products are out of stock
+                </Typography>
+                <Typography variant="body2">
+                  The following items are currently unavailable: {outOfStockProducts.map(p => p.name).join(', ')}. 
+                  Please remove them from your cart to proceed with checkout.
+                </Typography>
+              </Alert>
+            )}
+
             <div className="cart-items-list">
               {products.map((product) => {
                 if (cartItems[product.id] > 0) {
+                  const isOutOfStock = isProductOutOfStock(product.id);
                   return (
-                    <div key={product.id} className="cart-item" data-qa-label={"product-item-cart"}>
+                    <div 
+                      key={product.id} 
+                      className={`cart-item ${isOutOfStock ? 'out-of-stock-item' : ''}`} 
+                      data-qa-label={"product-item-cart"}
+                    >
                       <div className="item-image">
                         <img src={backend_url + product.image} alt={product.name} />
+                        {isOutOfStock && (
+                          <div className="out-of-stock-overlay">
+                            <WarningAmberIcon />
+                            <span>Out of Stock</span>
+                          </div>
+                        )}
                       </div>
                       <div className="item-details">
                         <h3 className="item-name">{product.name}</h3>
@@ -173,6 +215,12 @@ const CartItems = () => {
                           <span>Quantity: </span>
                           <span className="quantity-badge">{cartItems[product.id]}</span>
                         </div>
+                        {isOutOfStock && (
+                          <div className="stock-warning">
+                            <WarningAmberIcon fontSize="small" />
+                            <span>This item is currently unavailable</span>
+                          </div>
+                        )}
                       </div>
                       <div className="item-total">
                         <div className="total-price">{currency}{(product.new_price * cartItems[product.id]).toFixed(2)}</div>
