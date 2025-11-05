@@ -1,7 +1,93 @@
+/* Modern Category Banner - Compact */
+.modern-category-banner {
+  position: relative;
+  width: 100%;
+  height: 220px;
+  margin-bottom: 40px;
+  overflow: hidden;
+  border-radius: 0;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.banner-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 30%;
+}
+
+.banner-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    135deg,
+    rgba(52, 120, 246, 0.85) 0%,
+    rgba(37, 99, 235, 0.75) 50%,
+    rgba(99, 102, 241, 0.85) 100%
+  );
+  z-index: 1;
+}
+
+.banner-content {
+  position: relative;
+  z-index: 2;
+  height: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 60px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  color: white;
+}
+
+.banner-category-label {
+  font-family: var(--font-primary);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  padding: 6px 16px;
+  border-radius: 50px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  margin-bottom: 12px;
+  display: inline-block;
+}
+
+.banner-title {
+  font-family: var(--font-primary);
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: white;
+  margin: 0 0 8px 0;
+  letter-spacing: -1.5px;
+  line-height: 1.1;
+  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
+}
+
+.banner-subtitle {
+  font-family: var(--font-primary);
+  font-size: 1rem;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.95);
+  margin: 0;
+  letter-spacing: 0.3px;
+  text-shadow: 0 1px 10px rgba(0, 0, 0, 0.15);
+}
+
+/* Old banner style - removed */
 .shopcategory-banner{
-    display: block;
-    margin: 30px auto;
-    width: 80%;
+    display: none;
 }
 .shopcategory-indexSort{
     display: flex;
@@ -101,10 +187,6 @@
   
   
 @media (max-width:1280px) {
-    .shopcategory-banner{
-        margin: 20px auto;
-        width: 90%;
-    }
     .shopcategory-indexSort{
         width: 90%;
        margin: auto;
@@ -116,15 +198,93 @@
     .shopcategory-indexSort p{
         font-size: 12px;
     }
-}
-@media (max-width:800px) {
-    .shopcategory-banner{
-        width: 95%;
+    
+    .modern-category-banner {
+        height: 200px;
+        margin-bottom: 35px;
     }
+    
+    .banner-content {
+        padding: 0 40px;
+    }
+    
+    .banner-title {
+        font-size: 2.25rem;
+        letter-spacing: -1.2px;
+    }
+    
+    .banner-subtitle {
+        font-size: 0.9375rem;
+    }
+}
+
+@media (max-width:800px) {
      .shopcategory-loadmore{
         margin: 60px auto;
         width: 150px;
         height: 40px;
         font-size: 13px;
+    }
+    
+    .modern-category-banner {
+        height: 170px;
+        margin-bottom: 30px;
+    }
+    
+    .banner-content {
+        padding: 0 24px;
+        align-items: center;
+        text-align: center;
+    }
+    
+    .banner-category-label {
+        font-size: 0.6875rem;
+        padding: 5px 14px;
+        margin-bottom: 10px;
+    }
+    
+    .banner-title {
+        font-size: 2rem;
+        letter-spacing: -1px;
+        margin-bottom: 6px;
+    }
+    
+    .banner-subtitle {
+        font-size: 0.875rem;
+    }
+    
+    .shopcategory-indexSort {
+        flex-direction: column;
+        gap: 16px;
+        align-items: flex-start;
+        margin: 0 20px;
+    }
+}
+
+@media (max-width:480px) {
+    .modern-category-banner {
+        height: 140px;
+        margin-bottom: 24px;
+    }
+    
+    .banner-content {
+        padding: 0 20px;
+    }
+    
+    .banner-category-label {
+        font-size: 0.625rem;
+        padding: 4px 12px;
+        margin-bottom: 8px;
+        letter-spacing: 1.5px;
+    }
+    
+    .banner-title {
+        font-size: 1.5rem;
+        letter-spacing: -0.5px;
+        margin-bottom: 4px;
+    }
+    
+    .banner-subtitle {
+        font-size: 0.75rem;
     }
 }

@@ -40,7 +40,19 @@ const ShopCategory = (props) => {
 
   return (
     <div className="shopcategory">
-      <img src={props.banner} className="shopcategory-banner" alt="" />
+      <div className="modern-category-banner">
+        <div className="banner-overlay"></div>
+        <img src={props.banner} className="banner-image" alt={`${props.category} collection`} />
+        <div className="banner-content">
+          <div className="banner-category-label">{props.category}</div>
+          <h1 className="banner-title">
+            {props.category === 'men' ? 'Men\'s Collection' : 
+             props.category === 'women' ? 'Women\'s Collection' : 
+             'Kids Collection'}
+          </h1>
+          <p className="banner-subtitle">Discover the latest styles and trends</p>
+        </div>
+      </div>
       <div className="shopcategory-indexSort">
         <p><span>Showing 1 - 12</span> out of {filteredAndSortedProducts.length} Products</p>
         <div className="shopcategory-sort-container">
