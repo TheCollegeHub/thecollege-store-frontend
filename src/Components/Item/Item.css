@@ -100,15 +100,6 @@
     cursor: not-allowed;
 }
 
-.add-to-cart-btn.added {
-    background: linear-gradient(135deg, #34c759 0%, #28a745 100%);
-    box-shadow: 0 4px 12px rgba(52, 199, 89, 0.3);
-}
-
-.add-to-cart-btn.added:hover {
-    background: linear-gradient(135deg, #34c759 0%, #28a745 100%);
-}
-
 .add-to-cart-btn svg {
     display: flex;
     align-items: center;
@@ -116,6 +107,55 @@
 
 .add-to-cart-btn span {
     white-space: nowrap;
+}
+
+/* Toast Notification */
+.toast-notification {
+    position: fixed;
+    top: 24px;
+    right: 24px;
+    z-index: 9999;
+    animation: slideInRight 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.toast-content {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: white;
+    padding: 16px 24px;
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12), 
+                0 2px 8px rgba(0, 0, 0, 0.08);
+    border: 1px solid rgba(52, 199, 89, 0.2);
+    min-width: 300px;
+    backdrop-filter: blur(10px);
+}
+
+.toast-icon {
+    color: #34C759;
+    font-size: 24px !important;
+    flex-shrink: 0;
+}
+
+.toast-message {
+    margin: 0;
+    font-family: var(--font-primary);
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: #1d1d1f;
+    letter-spacing: -0.2px;
+}
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(400px);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
 }
 
 /* Image loading state */
