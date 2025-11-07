@@ -102,12 +102,12 @@ const Navbar = () => {
                   </MenuItem>
                 </Menu>
                 <Link to="/favorites" className="nav-icon-button favorites-btn" onClick={() => setMenu("favorites")}>
-                  <Badge badgeContent={favorites.length} color="error">
+                  <Badge badgeContent={favorites.length} color="error" invisible={favorites.length === 0}>
                     <FavoriteIcon />
                   </Badge>
                 </Link>
                 <Link data-qa-locator={"cart-button"} to="/cart" className="nav-icon-button cart-btn" onClick={() => setMenu("cart")}>
-                  <Badge badgeContent={getTotalCartItems()} color="error">
+                  <Badge badgeContent={getTotalCartItems()} color="error" invisible={getTotalCartItems() === 0}>
                     <ShoppingCartIcon />
                   </Badge>
                 </Link>
