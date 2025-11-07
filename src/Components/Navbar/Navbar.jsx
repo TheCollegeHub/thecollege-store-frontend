@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom';
 import { Menu, MenuItem, IconButton, Typography, Badge } from '@mui/material';
 import SettingsIcon from '@mui/icons-material/Settings';
 import FavoriteIcon from '@mui/icons-material/Favorite';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import logo from '../Assets/logothecollegestore.png';
-import cart_icon from '../Assets/cart_icon.png';
 import { ShopContext } from '../../Context/ShopContext';
 import { FavoritesContext } from '../../Context/FavoritesContext';
 import nav_dropdown from '../Assets/nav_dropdown.png';
@@ -72,40 +72,48 @@ const Navbar = () => {
       <div className="nav-login-cart">
         {localStorage.getItem('auth-token') && userName
           ? <>
-              <Typography variant="body1">Olá, {userName}!</Typography>
-              <IconButton 
-                onClick={handleMenuOpen}
-                aria-label="Menu"
-                edge="end"
-                style={{ width: 36, height: 36, padding: 8, borderRadius: '50%' }}
-              >
-                <SettingsIcon />
-              </IconButton>
-              <Menu
-                anchorEl={anchorEl}
-                open={Boolean(anchorEl)}
-                onClose={handleMenuClose}
-              >
-                <MenuItem onClick={() => { setMenu("myorders"); handleMenuClose(); }}>
-                  <Link to='/myorders' style={{ textDecoration: 'none', color: 'inherit' }}>My Orders</Link>
-                </MenuItem>
-                <MenuItem onClick={() => { localStorage.removeItem('auth-token'); localStorage.removeItem('user-id'); window.location.replace("/"); }}>
-                  Logout
-                </MenuItem>
-              </Menu>
+              <Typography variant="body1" className="welcome-text">Olá, {userName}!</Typography>
+              <div className="nav-action-icons">
+                <IconButton 
+                  className="nav-icon-button settings-btn"
+                  onClick={handleMenuOpen}
+                  aria-label="Settings"
+                >
+                  <SettingsIcon />
+                </IconButton>
+                <Menu
+                  anchorEl={anchorEl}
+                  open={Boolean(anchorEl)}
+                  onClose={handleMenuClose}
+                  PaperProps={{
+                    elevation: 3,
+                    sx: {
+                      mt: 1.5,
+                      borderRadius: 2,
+                      minWidth: 180,
+                    }
+                  }}
+                >
+                  <MenuItem onClick={() => { setMenu("myorders"); handleMenuClose(); }}>
+                    <Link to='/myorders' style={{ textDecoration: 'none', color: 'inherit' }}>My Orders</Link>
+                  </MenuItem>
+                  <MenuItem onClick={() => { localStorage.removeItem('auth-token'); localStorage.removeItem('user-id'); window.location.replace("/"); }}>
+                    Logout
+                  </MenuItem>
+                </Menu>
+                <Link to="/favorites" className="nav-icon-button favorites-btn" onClick={() => setMenu("favorites")}>
+                  <Badge badgeContent={favorites.length} color="error">
+                    <FavoriteIcon />
+                  </Badge>
+                </Link>
+                <Link data-qa-locator={"cart-button"} to="/cart" className="nav-icon-button cart-btn" onClick={() => setMenu("cart")}>
+                  <Badge badgeContent={getTotalCartItems()} color="error">
+                    <ShoppingCartIcon />
+                  </Badge>
+                </Link>
+              </div>
             </>
           : <Link to='/login' style={{ textDecoration: 'none' }}><button data-qa-label="button-login">Login</button></Link>}
-        <div className="nav-icons">
-          <Link to="/favorites" className="favorites-link" onClick={() => setMenu("favorites")}>
-            <Badge badgeContent={favorites.length} color="error">
-              <FavoriteIcon className="favorites-icon" />
-            </Badge>
-          </Link>
-          <div className="cart-container">
-            <Link data-qa-locator={"cart-button"} to="/cart"><img src={cart_icon} alt="cart" /></Link>
-            <div id='cart-items' className="nav-cart-count">{getTotalCartItems()}</div>
-          </div>
-        </div>
       </div>
     </div>
   );
