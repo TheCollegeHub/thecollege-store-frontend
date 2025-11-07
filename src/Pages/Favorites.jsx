@@ -1,8 +1,8 @@
 import React, { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './Favorites.css';
-import { FavoritesContext } from '../../Context/FavoritesContext';
-import Item from '../../Components/Item/Item';
+import './CSS/Favorites.css';
+import { FavoritesContext } from '../Context/FavoritesContext';
+import Item from '../Components/Item/Item';
 import { Button, Typography, CircularProgress } from '@mui/material';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 
