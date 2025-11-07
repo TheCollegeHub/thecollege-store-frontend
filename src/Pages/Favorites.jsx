@@ -39,7 +39,8 @@ const Favorites = () => {
           {favorites.map((product) => (
             <Item
               key={product._id || product.id}
-              id={product._id || product.id}
+              id={product.id}
+              _id={product._id}
               name={product.name}
               image={product.image}
               new_price={product.new_price}

@@ -73,7 +73,8 @@ const ShopCategory = (props) => {
       <div className="shopcategory-products">
         {filteredAndSortedProducts.slice(0, 12).map((item, i) => (
           <Item
-            id={item._id || item.id}
+            id={item.id}
+            _id={item._id}
             key={i}
             name={item.name}
             image={item.image}

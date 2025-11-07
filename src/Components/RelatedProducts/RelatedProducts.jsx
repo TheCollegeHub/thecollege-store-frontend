@@ -25,8 +25,8 @@ const RelatedProducts = ({category,id}) => {
       <hr />
       <div className="relatedproducts-item">
         {related.map((item,index)=>{
-          if (id !== (item._id || item.id)) {
-            return <Item key={index} id={item._id || item.id} name={item.name} image={item.image}  new_price={item.new_price} old_price={item.old_price}/>
+          if (id !== item.id) {
+            return <Item key={index} id={item.id} _id={item._id} name={item.name} image={item.image}  new_price={item.new_price} old_price={item.old_price}/>
           }
         })}
       </div>

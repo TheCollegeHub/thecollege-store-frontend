@@ -12,7 +12,7 @@ const Product = () => {
   const [product,setProduct] = useState(false);
 
   useEffect(()=>{
-    setProduct(products.find((e)=>(e._id || e.id) === Number(productId)))
+    setProduct(products.find((e)=>e.id === Number(productId)))
   },[products,productId])
 
   return product ? (
@@ -20,7 +20,7 @@ const Product = () => {
       <Breadcrums product={product}/>
       <ProductDisplay product={product}/>
       <DescriptionBox/>
-      <RelatedProducts id={product._id || product.id} category={product.category}/>
+      <RelatedProducts id={product.id} category={product.category}/>
     </div>
   ) : null
 }

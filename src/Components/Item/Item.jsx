@@ -10,7 +10,8 @@ const Item = (props) => {
   const { toggleFavorite, isFavorite } = useContext(FavoritesContext);
   const [isToggling, setIsToggling] = useState(false);
   
-  const favorite = isFavorite(props.id);
+  // Use _id for favorites API, id for navigation
+  const favorite = isFavorite(props._id || props.id);
 
   const handleFavoriteClick = async (e) => {
     e.preventDefault();
@@ -19,7 +20,8 @@ const Item = (props) => {
     if (isToggling) return;
     
     setIsToggling(true);
-    await toggleFavorite(props.id);
+    // Use _id for the favorites API
+    await toggleFavorite(props._id || props.id);
     setIsToggling(false);
   };
 
