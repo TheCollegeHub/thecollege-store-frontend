@@ -1,10 +1,12 @@
 import React, { useContext, useRef, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Menu, MenuItem, IconButton, Typography } from '@mui/material';
+import { Menu, MenuItem, IconButton, Typography, Badge } from '@mui/material';
 import SettingsIcon from '@mui/icons-material/Settings';
+import FavoriteIcon from '@mui/icons-material/Favorite';
 import logo from '../Assets/logothecollegestore.png';
 import cart_icon from '../Assets/cart_icon.png';
 import { ShopContext } from '../../Context/ShopContext';
+import { FavoritesContext } from '../../Context/FavoritesContext';
 import nav_dropdown from '../Assets/nav_dropdown.png';
 import { backend_url } from '../../App';
 import './Navbar.css';
@@ -12,6 +14,7 @@ import './Navbar.css';
 const Navbar = () => {
   const [menu, setMenu] = useState("shop");
   const { getTotalCartItems } = useContext(ShopContext);
+  const { favorites } = useContext(FavoritesContext);
   const [userName, setUserName] = useState("");
   const [anchorEl, setAnchorEl] = useState(null);
   const userId = localStorage.getItem('user-id');
@@ -92,9 +95,16 @@ const Navbar = () => {
               </Menu>
             </>
           : <Link to='/login' style={{ textDecoration: 'none' }}><button data-qa-label="button-login">Login</button></Link>}
-        <div className="cart-container">
-          <Link data-qa-locator={"cart-button"} to="/cart"><img src={cart_icon} alt="cart" /></Link>
-          <div id='cart-items' className="nav-cart-count">{getTotalCartItems()}</div>
+        <div className="nav-icons">
+          <Link to="/favorites" className="favorites-link" onClick={() => setMenu("favorites")}>
+            <Badge badgeContent={favorites.length} color="error">
+              <FavoriteIcon className="favorites-icon" />
+            </Badge>
+          </Link>
+          <div className="cart-container">
+            <Link data-qa-locator={"cart-button"} to="/cart"><img src={cart_icon} alt="cart" /></Link>
+            <div id='cart-items' className="nav-cart-count">{getTotalCartItems()}</div>
+          </div>
         </div>
       </div>
     </div>

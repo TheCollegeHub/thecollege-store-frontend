@@ -111,6 +111,33 @@
     gap: var(--spacing-lg);
 }
 
+.nav-icons {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+}
+
+.favorites-link {
+    display: flex;
+    align-items: center;
+    transition: transform var(--transition-fast);
+    text-decoration: none;
+}
+
+.favorites-link:hover {
+    transform: scale(1.05);
+}
+
+.favorites-icon {
+    color: #FF3B30 !important;
+    font-size: 28px !important;
+    transition: all var(--transition-fast);
+}
+
+.favorites-link:hover .favorites-icon {
+    transform: scale(1.1);
+}
+
 .cart-container {
     position: relative;
     display: inline-block;
@@ -350,6 +377,14 @@
     .nav-login-cart {
         gap: var(--spacing-md);
         transform: scale(0.9);
+    }
+    
+    .nav-icons {
+        gap: var(--spacing-sm);
+    }
+    
+    .favorites-icon {
+        font-size: 24px !important;
     }
     
     .nav-login-cart button {
