@@ -20,7 +20,7 @@ const FavoritesProvider = (props) => {
     }
 
     try {
-      const response = await fetch(`${backend_url}/v2/favorites/${userId}`, {
+      const response = await fetch(`${backend_url}/api/v2/favorites/${userId}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -50,7 +50,7 @@ const FavoritesProvider = (props) => {
     const productId = typeof product === 'object' ? (product._id || product.id) : product;
 
     try {
-      const response = await fetch(`${backend_url}/v2/favorites/toggle`, {
+      const response = await fetch(`${backend_url}/api/v2/favorites/toggle`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -58,7 +58,7 @@ const FavoritesProvider = (props) => {
         },
         body: JSON.stringify({
           userId: userId,
-          products: [productId],
+          productId: productId,
         }),
       });
 
