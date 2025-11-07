@@ -46,6 +46,9 @@ const FavoritesProvider = (props) => {
       return { success: false, message: 'Please login to add favorites' };
     }
 
+    // Handle both direct ID values and product objects
+    const productId = typeof product === 'object' ? (product._id || product.id) : product;
+
     try {
       const response = await fetch(`${backend_url}/v2/favorites/toggle`, {
         method: 'POST',
@@ -55,7 +58,7 @@ const FavoritesProvider = (props) => {
         },
         body: JSON.stringify({
           userId: userId,
-          products: [product._id || product.id],
+          products: [productId],
         }),
       });
 

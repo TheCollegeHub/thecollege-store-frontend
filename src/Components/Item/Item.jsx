@@ -19,7 +19,7 @@ const Item = (props) => {
     if (isToggling) return;
     
     setIsToggling(true);
-    await toggleFavorite({ _id: props.id, id: props.id });
+    await toggleFavorite(props.id);
     setIsToggling(false);
   };
 
