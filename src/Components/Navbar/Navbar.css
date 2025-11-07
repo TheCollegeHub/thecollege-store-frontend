@@ -262,16 +262,20 @@
     border: 2px solid white;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
     animation: badgePulse 2s ease-in-out infinite;
-    top: 6px;
-    right: 6px;
+    transform: scale(1) translate(50%, -50%);
+    transform-origin: 100% 0%;
+}
+
+.nav-icon-button .MuiBadge-badge.MuiBadge-invisible {
+    transform: scale(0) translate(50%, -50%);
 }
 
 @keyframes badgePulse {
     0%, 100% {
-        transform: scale(1);
+        transform: scale(1) translate(50%, -50%);
     }
     50% {
-        transform: scale(1.1);
+        transform: scale(1.1) translate(50%, -50%);
     }
 }
 
@@ -399,8 +403,6 @@
         height: 16px;
         font-size: 10px;
         border-width: 1.5px;
-        top: 4px;
-        right: 4px;
     }
 }
 
@@ -453,7 +455,5 @@
         height: 14px;
         font-size: 9px;
         padding: 0 3px;
-        top: 3px;
-        right: 3px;
     }
 }
