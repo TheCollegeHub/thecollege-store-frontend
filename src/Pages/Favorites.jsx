@@ -38,8 +38,8 @@ const Favorites = () => {
         <div className="favorites-grid">
           {favorites.map((product) => (
             <Item
-              key={product.id || product._id}
-              id={product.id || product._id}
+              key={product._id || product.id}
+              id={product._id || product.id}
               name={product.name}
               image={product.image}
               new_price={product.new_price}
