@@ -21,6 +21,8 @@ const Checkout = () => {
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [recommendedProducts, setRecommendedProducts] = useState([]);
+  const [loadingRecommendations, setLoadingRecommendations] = useState(true);
 
 const handleCloseSnackbar = () => {
   setOpenSnackbar(false);
@@ -42,6 +44,58 @@ const handleCloseSnackbar = () => {
 
   const [addressesLoaded, setAddressesLoaded] = useState(false);
   const [cardsLoaded, setCardsLoaded] = useState(false);
+
+  // Fetch recommended products
+  useEffect(() => {
+    const fetchRecommendations = async () => {
+      const authToken = localStorage.getItem('auth-token');
+      const userId = localStorage.getItem('user-id');
+      
+      if (!authToken || !userId) {
+        setLoadingRecommendations(false);
+        return;
+      }
+
+      try {
+        // Step 1: Get recommendation IDs
+        const recommendationsResponse = await fetch(`${backend_url}/api/recommendations/${userId}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'auth-token': authToken,
+          },
+        });
+
+        if (!recommendationsResponse.ok) {
+          throw new Error('Failed to fetch recommendations');
+        }
+
+        const { recommendedProductIds } = await recommendationsResponse.json();
+
+        if (recommendedProductIds && recommendedProductIds.length > 0) {
+          // Step 2: Get products by IDs
+          const productsResponse = await fetch(`${backend_url}/api/products`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ ids: recommendedProductIds }),
+          });
+
+          if (productsResponse.ok) {
+            const products = await productsResponse.json();
+            setRecommendedProducts(products);
+          }
+        }
+      } catch (error) {
+        console.error('Error fetching recommendations:', error);
+      } finally {
+        setLoadingRecommendations(false);
+      }
+    };
+
+    fetchRecommendations();
+  }, []);
 
   useEffect(() => {
     // Fetch addresses and cards from backend
@@ -457,6 +511,43 @@ const handleCloseSnackbar = () => {
             </div>
           </div>
         </div>
+
+        {/* Recommendations Section - Separate Card */}
+        {!loadingRecommendations && recommendedProducts.length > 0 && (
+          <div className="recommendations-wrapper">
+            <div className="checkout-section recommendations-section standalone-recommendations">
+              <div className="section-header">
+                <div className="section-title-container">
+                  <div className="section-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                  </div>
+                  <h3 className="section-title">Recommended For You</h3>
+                </div>
+              </div>
+              
+              <div className="recommendations-grid">
+                {recommendedProducts.map((product) => (
+                  <div key={product.id} className="recommendation-card" onClick={() => navigate(`/product/${product.id}`)}>
+                    <div className="recommendation-image">
+                      <img src={backend_url + product.image} alt={product.name} />
+                    </div>
+                    <div className="recommendation-details">
+                      <h4 className="recommendation-name">{product.name}</h4>
+                      <div className="recommendation-price">
+                        <span className="current-price">{currency}{product.new_price}</span>
+                        {product.old_price && product.old_price !== product.new_price && (
+                          <span className="old-price">{currency}{product.old_price}</span>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
 
