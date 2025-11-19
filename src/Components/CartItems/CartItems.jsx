@@ -4,12 +4,13 @@ import "./CartItems.css";
 import cross_icon from "../Assets/cart_cross_icon.png";
 import { ShopContext } from "../../Context/ShopContext";
 import { backend_url, currency } from "../../App";
-import { Button, Typography } from '@mui/material';
+import { Button, Typography, IconButton } from '@mui/material';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 
 const CartItems = () => {
-  const { products, cartItems, removeFromCart, getTotalCartAmount, applyDiscount } = useContext(ShopContext);
+  const { products, cartItems, removeFromCart, getTotalCartAmount, applyDiscount, clearCart } = useContext(ShopContext);
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
   const [discountCode, setDiscountCode] = useState("");
@@ -26,6 +27,14 @@ const CartItems = () => {
   const handleRemoveFromCart = (itemId) => {
     removeFromCart(itemId);
     showToastNotification("Product removed from cart successfully!");
+  };
+
+  const handleClearCart = async () => {
+    await clearCart();
+    setDiscountPercentage(0);
+    setDiscountAppliedMessage("");
+    setDiscountCode("");
+    showToastNotification("All products removed from cart successfully!");
   };
 
   const handleDiscountSubmit = async () => {
@@ -156,6 +165,14 @@ const CartItems = () => {
           <div className="cart-items-section">
             <div className="cart-header">
               <Typography variant="h4" className="cart-title">Shopping Cart</Typography>
+              <IconButton 
+                className="clear-cart-btn"
+                onClick={handleClearCart}
+                title="Clear all items"
+                aria-label="Clear cart"
+              >
+                <DeleteOutlineIcon />
+              </IconButton>
             </div>
 
             <div className="cart-items-list">
