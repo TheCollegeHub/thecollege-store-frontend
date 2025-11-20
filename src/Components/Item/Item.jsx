@@ -55,7 +55,7 @@ const Item = (props) => {
             {/* Imagem */}
             <img 
               onClick={() => window.scrollTo(0, 0)} 
-              src={backend_url + props.image} 
+              src={backend_url + '/api' + props.image} 
               alt="products" 
             />
 

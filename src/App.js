@@ -15,7 +15,7 @@ import MyOrders from './Components/MyOrders/MyOrders';
 import OrderDetails from './Components/OrderDetails/OrderDetails';
 import Favorites from './Pages/Favorites';
 import FavoritesProvider from './Context/FavoritesContext';
-export const backend_url = process.env.REACT_APP_BACKEND_HOST || 'http://localhost:4000';
+export const backend_url = process.env.REACT_APP_BACKEND_HOST || 'http://localhost:5001';
 export const currency = '$';
 
 function App() {
