@@ -553,7 +553,7 @@ const handleCloseSnackbar = () => {
                 {recommendedProducts.map((product) => (
                   <div key={product.id} className="recommendation-card" onClick={() => navigate(`/product/${product.id}`)}>
                     <div className="recommendation-image">
-                      <img src={backend_url + product.image} alt={product.name} />
+                      <img src={backend_url + "/api" + product.image} alt={product.name} />
                     </div>
                     <div className="recommendation-details">
                       <h4 className="recommendation-name">{product.name}</h4>

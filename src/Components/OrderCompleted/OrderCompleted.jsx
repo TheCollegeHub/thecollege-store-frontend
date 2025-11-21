@@ -162,7 +162,7 @@ const OrderCompleted = () => {
                 return (
                   <div key={product.id} className="product-item">
                     <div className="product-image">
-                      <img src={backend_url + product.image} alt={product.name} />
+                      <img src={backend_url + "/api" + product.image} alt={product.name} />
                     </div>
                     <div className="product-details">
                       <h4 className="product-name">{product.name}</h4>

@@ -222,7 +222,7 @@ const CartItems = () => {
                       data-qa-label={"product-item-cart"}
                     >
                       <div className="item-image">
-                        <img src={backend_url + product.image} alt={product.name} />
+                        <img src={backend_url + "/api" + product.image} alt={product.name} />
                         {isOutOfStock && (
                           <div className="out-of-stock-overlay">
                             <WarningAmberIcon />
