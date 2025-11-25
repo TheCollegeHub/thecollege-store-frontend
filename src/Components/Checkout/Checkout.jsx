@@ -22,6 +22,7 @@ const Checkout = () => {
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [couponCode, setCouponCode] = useState('');
 
 const handleCloseSnackbar = () => {
   setOpenSnackbar(false);
@@ -104,6 +105,33 @@ const handleCloseSnackbar = () => {
   const getTotalAfterDiscount = () => {
     const total = getTotalCartAmount();
     return total - (total * discountPercentage / 100);
+  };
+
+  const getTotalCartItemsCount = () => {
+    return Object.values(cartItems).reduce((total, quantity) => total + quantity, 0);
+  };
+
+  const validateWelcomeCoupon = () => {
+    const MINIMUM_VALUE = 150;
+    const MINIMUM_ITEMS = 3;
+    
+    const totalAmount = getTotalCartAmount();
+    const totalItems = getTotalCartItemsCount();
+    
+    const requirements = [];
+    
+    if (totalAmount < MINIMUM_VALUE) {
+      requirements.push(`Add ${currency}${(MINIMUM_VALUE - totalAmount).toFixed(2)} more to reach minimum order value of ${currency}${MINIMUM_VALUE}`);
+    }
+    
+    if (totalItems < MINIMUM_ITEMS) {
+      requirements.push(`Add ${MINIMUM_ITEMS - totalItems} more item${MINIMUM_ITEMS - totalItems > 1 ? 's' : ''} (minimum ${MINIMUM_ITEMS} items required)`);
+    }
+    
+    return {
+      isValid: requirements.length === 0,
+      requirements: requirements
+    };
   };
 
   const validateCardNumber = (cardNumber) => {
@@ -304,6 +332,19 @@ const handleCloseSnackbar = () => {
   };
 
   const handlePayment = async () => {
+    // Validate WELCOME coupon if discount is applied
+    if (discountPercentage > 0) {
+      const validation = validateWelcomeCoupon();
+      
+      if (!validation.isValid) {
+        const requirementsMessage = validation.requirements.join('\n• ');
+        setError(true);
+        setErrorMessage(`Cannot apply WELCOME coupon. Requirements not met:\n• ${requirementsMessage}`);
+        setOpenSnackbar(true);
+        return;
+      }
+    }
+
     const userId = localStorage.getItem('user-id');
     const orderDetails = {
       cartItems: cartItems, 
@@ -359,10 +400,31 @@ const handleCloseSnackbar = () => {
               <span className="free-shipping">Free</span>
             </div>
             {discountPercentage > 0 && (
-              <div className="summary-row discount-row">
-                <span>Discount ({discountPercentage}%)</span>
-                <span className="discount-amount">-{currency}{(getTotalCartAmount() * discountPercentage / 100).toFixed(2)}</span>
-              </div>
+              <>
+                <div className="summary-row discount-row">
+                  <span>Discount ({discountPercentage}%)</span>
+                  <span className="discount-amount">-{currency}{(getTotalCartAmount() * discountPercentage / 100).toFixed(2)}</span>
+                </div>
+                {(() => {
+                  const validation = validateWelcomeCoupon();
+                  if (!validation.isValid) {
+                    return (
+                      <div className="coupon-warning">
+                        <div className="warning-icon">⚠️</div>
+                        <div className="warning-content">
+                          <strong>WELCOME Coupon Requirements:</strong>
+                          <ul>
+                            {validation.requirements.map((req, index) => (
+                              <li key={index}>{req}</li>
+                            ))}
+                          </ul>
+                        </div>
+                      </div>
+                    );
+                  }
+                  return null;
+                })()}
+              </>
             )}
             <hr className="summary-divider" />
             <div className="summary-row total-row">
