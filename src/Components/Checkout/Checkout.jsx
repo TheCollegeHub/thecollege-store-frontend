@@ -23,6 +23,7 @@ const Checkout = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [couponCode, setCouponCode] = useState('');
+  const [cartTotal, setCartTotal] = useState(0);
 
 const handleCloseSnackbar = () => {
   setOpenSnackbar(false);
@@ -50,6 +51,12 @@ const handleCloseSnackbar = () => {
 
   const [addressesLoaded, setAddressesLoaded] = useState(false);
   const [cardsLoaded, setCardsLoaded] = useState(false);
+
+  // Update cart total whenever cartItems changes
+  useEffect(() => {
+    const total = getTotalCartAmount();
+    setCartTotal(total);
+  }, [cartItems, getTotalCartAmount]);
 
   useEffect(() => {
     // Fetch addresses and cards from backend
@@ -102,23 +109,23 @@ const handleCloseSnackbar = () => {
     fetchCards();
   }, []);
 
-  // Memoize cart calculations to ensure they update when cartItems changes
-  const subtotal = useMemo(() => getTotalCartAmount(), [cartItems, getTotalCartAmount]);
+  // Memoize cart calculations to ensure they update when cartTotal changes
+  const subtotal = useMemo(() => cartTotal, [cartTotal]);
   
   const shippingCost = useMemo(() => {
-    if (subtotal >= 200) {
+    if (cartTotal >= 200) {
       return 0; // Free shipping
-    } else if (subtotal >= 100 && subtotal < 200) {
+    } else if (cartTotal >= 100 && cartTotal < 200) {
       return 25; // $25 shipping
     } else {
       return 50; // $50 shipping
     }
-  }, [subtotal]);
+  }, [cartTotal]);
 
   const totalAfterDiscount = useMemo(() => {
-    const discount = subtotal * discountPercentage / 100;
-    return subtotal - discount + shippingCost;
-  }, [subtotal, discountPercentage, shippingCost]);
+    const discount = cartTotal * discountPercentage / 100;
+    return cartTotal - discount + shippingCost;
+  }, [cartTotal, discountPercentage, shippingCost]);
 
   const getTotalCartItemsCount = () => {
     return Object.values(cartItems).reduce((total, quantity) => total + quantity, 0);
