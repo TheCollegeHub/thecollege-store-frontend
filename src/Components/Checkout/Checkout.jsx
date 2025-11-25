@@ -103,12 +103,26 @@ const handleCloseSnackbar = () => {
   }, []);
 
   const getTotalAfterDiscount = () => {
-    const total = getTotalCartAmount();
-    return total - (total * discountPercentage / 100);
+    const subtotal = getTotalCartAmount();
+    const discount = subtotal * discountPercentage / 100;
+    const shipping = getShippingCost();
+    return subtotal - discount + shipping;
   };
 
   const getTotalCartItemsCount = () => {
     return Object.values(cartItems).reduce((total, quantity) => total + quantity, 0);
+  };
+
+  const getShippingCost = () => {
+    const subtotal = getTotalCartAmount();
+    
+    if (subtotal >= 200) {
+      return 0; // Free shipping
+    } else if (subtotal >= 100 && subtotal < 200) {
+      return 25; // $25 shipping
+    } else {
+      return 50; // $50 shipping
+    }
   };
 
   const validateWelcomeCoupon = () => {
@@ -350,6 +364,7 @@ const handleCloseSnackbar = () => {
       cartItems: cartItems, 
       totalAmount: getTotalCartAmount(),
       discount: discountPercentage,
+      shipping: getShippingCost(),
       finalAmount: getTotalAfterDiscount(),
       address: addresses.find(address => address._id === selectedAddress),
       paymentMethod: cards.find(card => card._id === selectedCard)
@@ -397,7 +412,11 @@ const handleCloseSnackbar = () => {
             </div>
             <div className="summary-row">
               <span>Shipping</span>
-              <span className="free-shipping">Free</span>
+              {getShippingCost() === 0 ? (
+                <span className="free-shipping">Free</span>
+              ) : (
+                <span>{currency}{getShippingCost()}</span>
+              )}
             </div>
             {discountPercentage > 0 && (
               <>
