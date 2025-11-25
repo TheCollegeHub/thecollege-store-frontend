@@ -225,3 +225,39 @@
         height: 16px;
     }
 }
+
+/* Email Validation Styles */
+.input-wrapper {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.input-error {
+    border-color: #d32f2f !important;
+}
+
+.input-error:focus {
+    border-color: #d32f2f !important;
+    box-shadow: 0 0 0 3px rgba(211, 47, 47, 0.1) !important;
+}
+
+.error-message {
+    color: #d32f2f;
+    font-size: 12px;
+    font-family: var(--font-primary);
+    margin-top: 4px;
+    padding-left: 4px;
+    animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-4px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
