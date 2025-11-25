@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect, useMemo } from "react";
 import { useNavigate } from 'react-router-dom';
 import "./CartItems.css";
 import cross_icon from "../Assets/cart_cross_icon.png";
@@ -15,7 +15,14 @@ const CartItems = () => {
   const [discountCode, setDiscountCode] = useState("");
   const [discountPercentage, setDiscountPercentage] = useState(0);
   const [discountAppliedMessage, setDiscountAppliedMessage] = useState("");
+  const [cartTotal, setCartTotal] = useState(0);
   const navigate = useNavigate();
+
+  // Update cart total whenever cartItems changes
+  useEffect(() => {
+    const total = getTotalCartAmount();
+    setCartTotal(total);
+  }, [cartItems, getTotalCartAmount]);
 
   const showToastNotification = (message) => {
     setToastMessage(message);
@@ -52,9 +59,20 @@ const CartItems = () => {
     setDiscountAppliedMessage("Discount removed");
   };
 
+  // Calculate shipping cost based on cart total
+  const shippingCost = useMemo(() => {
+    if (cartTotal >= 200) {
+      return 0; // Free shipping
+    } else if (cartTotal >= 100 && cartTotal < 200) {
+      return 25; // $25 shipping
+    } else {
+      return 50; // $50 shipping
+    }
+  }, [cartTotal]);
+
   const getTotalAfterDiscount = () => {
-    const total = getTotalCartAmount();
-    return total - (total * discountPercentage / 100);
+    const discount = cartTotal * discountPercentage / 100;
+    return cartTotal - discount + shippingCost;
   };
 
   const hasCartItems = products.some(e => cartItems[e.id] > 0);
@@ -75,16 +93,20 @@ const CartItems = () => {
             <div className="summary-details">
               <div className="summary-row">
                 <span>Subtotal</span>
-                <span>{currency}{getTotalCartAmount()}</span>
+                <span>{currency}{cartTotal.toFixed(2)}</span>
               </div>
               <div className="summary-row">
                 <span>Shipping</span>
-                <span className="free-shipping">Free</span>
+                {shippingCost === 0 ? (
+                  <span className="free-shipping">Free</span>
+                ) : (
+                  <span>{currency}{shippingCost.toFixed(2)}</span>
+                )}
               </div>
               {discountPercentage > 0 && (
                 <div className="summary-row discount-row">
                   <span>Discount ({discountPercentage}%)</span>
-                  <span className="discount-amount">-{currency}{(getTotalCartAmount() * discountPercentage / 100).toFixed(2)}</span>
+                  <span className="discount-amount">-{currency}{(cartTotal * discountPercentage / 100).toFixed(2)}</span>
                   <button
                     className="remove-discount-btn"
                     onClick={handleRemoveDiscount}
