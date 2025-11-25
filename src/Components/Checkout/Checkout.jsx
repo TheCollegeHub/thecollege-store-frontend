@@ -1,5 +1,5 @@
 /* eslint-disable */
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ShopContext } from '../../Context/ShopContext';
 import { backend_url, currency } from '../../App';
@@ -102,20 +102,10 @@ const handleCloseSnackbar = () => {
     fetchCards();
   }, []);
 
-  const getTotalAfterDiscount = () => {
-    const subtotal = getTotalCartAmount();
-    const discount = subtotal * discountPercentage / 100;
-    const shipping = getShippingCost();
-    return subtotal - discount + shipping;
-  };
-
-  const getTotalCartItemsCount = () => {
-    return Object.values(cartItems).reduce((total, quantity) => total + quantity, 0);
-  };
-
-  const getShippingCost = () => {
-    const subtotal = getTotalCartAmount();
-    
+  // Memoize cart calculations to ensure they update when cartItems changes
+  const subtotal = useMemo(() => getTotalCartAmount(), [cartItems, getTotalCartAmount]);
+  
+  const shippingCost = useMemo(() => {
     if (subtotal >= 200) {
       return 0; // Free shipping
     } else if (subtotal >= 100 && subtotal < 200) {
@@ -123,13 +113,30 @@ const handleCloseSnackbar = () => {
     } else {
       return 50; // $50 shipping
     }
+  }, [subtotal]);
+
+  const totalAfterDiscount = useMemo(() => {
+    const discount = subtotal * discountPercentage / 100;
+    return subtotal - discount + shippingCost;
+  }, [subtotal, discountPercentage, shippingCost]);
+
+  const getTotalCartItemsCount = () => {
+    return Object.values(cartItems).reduce((total, quantity) => total + quantity, 0);
+  };
+
+  const getShippingCost = () => {
+    return shippingCost;
+  };
+
+  const getTotalAfterDiscount = () => {
+    return totalAfterDiscount;
   };
 
   const validateWelcomeCoupon = () => {
     const MINIMUM_VALUE = 150;
     const MINIMUM_ITEMS = 3;
     
-    const totalAmount = getTotalCartAmount();
+    const totalAmount = subtotal;
     const totalItems = getTotalCartItemsCount();
     
     const requirements = [];
@@ -362,10 +369,10 @@ const handleCloseSnackbar = () => {
     const userId = localStorage.getItem('user-id');
     const orderDetails = {
       cartItems: cartItems, 
-      totalAmount: getTotalCartAmount(),
+      totalAmount: subtotal,
       discount: discountPercentage,
-      shipping: getShippingCost(),
-      finalAmount: getTotalAfterDiscount(),
+      shipping: shippingCost,
+      finalAmount: totalAfterDiscount,
       address: addresses.find(address => address._id === selectedAddress),
       paymentMethod: cards.find(card => card._id === selectedCard)
     };
@@ -408,21 +415,21 @@ const handleCloseSnackbar = () => {
           <div className="summary-details">
             <div className="summary-row">
               <span>Subtotal</span>
-              <span>{currency}{getTotalCartAmount()}</span>
+              <span>{currency}{subtotal.toFixed(2)}</span>
             </div>
             <div className="summary-row">
               <span>Shipping</span>
-              {getShippingCost() === 0 ? (
+              {shippingCost === 0 ? (
                 <span className="free-shipping">Free</span>
               ) : (
-                <span>{currency}{getShippingCost()}</span>
+                <span>{currency}{shippingCost.toFixed(2)}</span>
               )}
             </div>
             {discountPercentage > 0 && (
               <>
                 <div className="summary-row discount-row">
                   <span>Discount ({discountPercentage}%)</span>
-                  <span className="discount-amount">-{currency}{(getTotalCartAmount() * discountPercentage / 100).toFixed(2)}</span>
+                  <span className="discount-amount">-{currency}{(subtotal * discountPercentage / 100).toFixed(2)}</span>
                 </div>
                 {(() => {
                   const validation = validateWelcomeCoupon();
@@ -448,7 +455,7 @@ const handleCloseSnackbar = () => {
             <hr className="summary-divider" />
             <div className="summary-row total-row">
               <span>Total</span>
-              <span>{currency}{getTotalAfterDiscount().toFixed(2)}</span>
+              <span>{currency}{totalAfterDiscount.toFixed(2)}</span>
             </div>
           </div>
 
