@@ -680,4 +680,52 @@
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
+
+/* Card Validation Icons */
+.card-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.card-icon svg {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  border-radius: 4px;
+}
+
+.visa-icon svg rect {
+  fill: #1434CB;
+}
+
+.mastercard-icon svg {
+  position: relative;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Card Input Validation States */
+.MuiTextField-root .Mui-error {
+  color: #d32f2f;
+}
+
+.MuiTextField-root .MuiFormHelperText-root.Mui-error {
+  color: #d32f2f;
+  font-size: 0.75rem;
+  margin-top: 4px;
+  font-family: var(--font-primary);
+}
+
+.MuiTextField-root .MuiOutlinedInput-root.Mui-error .MuiOutlinedInput-notchedOutline {
+  border-color: #d32f2f;
+}
   

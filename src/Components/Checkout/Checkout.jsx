@@ -5,9 +5,10 @@ import { ShopContext } from '../../Context/ShopContext';
 import { backend_url, currency } from '../../App';
 import {
   Container, Paper, Typography, Button, Radio, RadioGroup, FormControlLabel, FormControl, FormLabel, Grid,
-  Modal, TextField, IconButton, Box, Snackbar, Alert
+  Modal, TextField, IconButton, Box, Snackbar, Alert, InputAdornment
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
+import CreditCardIcon from '@mui/icons-material/CreditCard';
 import './Checkout.css';
 
 const Checkout = () => {
@@ -38,6 +39,12 @@ const handleCloseSnackbar = () => {
     cardNumber: '',
     expiryDate: '',
     cvv: ''
+  });
+
+  const [cardValidation, setCardValidation] = useState({
+    isValid: false,
+    cardType: null,
+    error: ''
   });
 
   const [addressesLoaded, setAddressesLoaded] = useState(false);
@@ -99,6 +106,99 @@ const handleCloseSnackbar = () => {
     return total - (total * discountPercentage / 100);
   };
 
+  const validateCardNumber = (cardNumber) => {
+    // Remove all spaces and non-numeric characters
+    const cleanNumber = cardNumber.replace(/\s/g, '');
+    
+    // Check if contains only numbers
+    if (!/^\d*$/.test(cleanNumber)) {
+      return {
+        isValid: false,
+        cardType: null,
+        error: 'Card number must contain only digits'
+      };
+    }
+
+    // Check if empty
+    if (cleanNumber.length === 0) {
+      return {
+        isValid: false,
+        cardType: null,
+        error: ''
+      };
+    }
+
+    // Check if less than 16 digits
+    if (cleanNumber.length < 16) {
+      return {
+        isValid: false,
+        cardType: null,
+        error: 'Card number must be 16 digits'
+      };
+    }
+
+    // Check if more than 16 digits
+    if (cleanNumber.length > 16) {
+      return {
+        isValid: false,
+        cardType: null,
+        error: 'Card number must be exactly 16 digits'
+      };
+    }
+
+    // Check if it's exactly 16 digits
+    if (cleanNumber.length === 16) {
+      // Check if starts with 4 (Visa)
+      if (cleanNumber.startsWith('4')) {
+        return {
+          isValid: true,
+          cardType: 'visa',
+          error: ''
+        };
+      }
+      // Check if starts with 5 (Mastercard)
+      else if (cleanNumber.startsWith('5')) {
+        return {
+          isValid: true,
+          cardType: 'mastercard',
+          error: ''
+        };
+      }
+      // Invalid card type
+      else {
+        return {
+          isValid: false,
+          cardType: null,
+          error: 'Card must be Visa (starts with 4) or Mastercard (starts with 5)'
+        };
+      }
+    }
+
+    return {
+      isValid: false,
+      cardType: null,
+      error: 'Invalid card number'
+    };
+  };
+
+  const handleCardNumberChange = (e) => {
+    const value = e.target.value;
+    // Remove all non-numeric characters
+    const numericValue = value.replace(/\D/g, '');
+    
+    // Limit to 16 digits
+    const limitedValue = numericValue.slice(0, 16);
+    
+    // Add spaces every 4 digits for display
+    const formattedValue = limitedValue.replace(/(\d{4})(?=\d)/g, '$1 ');
+    
+    setNewCard({ ...newCard, cardNumber: formattedValue });
+    
+    // Validate the card number
+    const validation = validateCardNumber(formattedValue);
+    setCardValidation(validation);
+  };
+
   const handleAddAddress = () => {
     setIsAddAddressOpen(true);
   };
@@ -125,6 +225,11 @@ const handleCloseSnackbar = () => {
       cardNumber: '',
       expiryDate: '',
       cvv: ''
+    });
+    setCardValidation({
+      isValid: false,
+      cardType: null,
+      error: ''
     });
   };
 
@@ -161,6 +266,14 @@ const handleCloseSnackbar = () => {
 
   const handleSaveCard = async (event) => {
     event.preventDefault();
+
+    // Validate card before saving
+    if (!cardValidation.isValid) {
+      setError(true);
+      setErrorMessage(cardValidation.error || 'Please enter a valid card number');
+      setOpenSnackbar(true);
+      return;
+    }
   
     const userId = localStorage.getItem('user-id');
     const authToken = localStorage.getItem('auth-token');
@@ -544,10 +657,39 @@ const handleCloseSnackbar = () => {
               <TextField
                 label="Card Number"
                 value={newCard.cardNumber}
-                onChange={(e) => setNewCard({ ...newCard, cardNumber: e.target.value })}
+                onChange={handleCardNumberChange}
                 fullWidth
                 margin="normal"
                 required
+                error={!!cardValidation.error}
+                helperText={cardValidation.error}
+                placeholder="1234 5678 9012 3456"
+                inputProps={{
+                  maxLength: 19, // 16 digits + 3 spaces
+                  inputMode: 'numeric'
+                }}
+                InputProps={{
+                  endAdornment: cardValidation.cardType && (
+                    <InputAdornment position="end">
+                      {cardValidation.cardType === 'visa' ? (
+                        <div className="card-icon visa-icon">
+                          <svg width="48" height="32" viewBox="0 0 48 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="48" height="32" rx="4" fill="#1434CB"/>
+                            <text x="24" y="21" fontFamily="Arial, sans-serif" fontSize="12" fontWeight="bold" fill="white" textAnchor="middle">VISA</text>
+                          </svg>
+                        </div>
+                      ) : cardValidation.cardType === 'mastercard' ? (
+                        <div className="card-icon mastercard-icon">
+                          <svg width="48" height="32" viewBox="0 0 48 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="48" height="32" rx="4" fill="#EB001B"/>
+                            <circle cx="19" cy="16" r="8" fill="#FF5F00" opacity="0.8"/>
+                            <circle cx="29" cy="16" r="8" fill="#F79E1B" opacity="0.8"/>
+                          </svg>
+                        </div>
+                      ) : null}
+                    </InputAdornment>
+                  )
+                }}
               />
               <TextField
                 label="Expiry Date"
@@ -556,6 +698,7 @@ const handleCloseSnackbar = () => {
                 fullWidth
                 margin="normal"
                 required
+                placeholder="MM/YY"
               />
               <TextField
                 label="CVV"
@@ -564,10 +707,21 @@ const handleCloseSnackbar = () => {
                 fullWidth
                 margin="normal"
                 required
+                type="password"
+                placeholder="123"
+                inputProps={{
+                  maxLength: 3,
+                  inputMode: 'numeric'
+                }}
               />
             </Box>
             <Box sx={{ display: 'flex', marginTop: '16px', padding: '16px' }}>
-              <Button variant="contained" color="primary" onClick={handleSaveCard}>
+              <Button 
+                variant="contained" 
+                color="primary" 
+                onClick={handleSaveCard}
+                disabled={!cardValidation.isValid}
+              >
                 Save Card
               </Button>
             </Box>
