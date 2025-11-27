@@ -10,6 +10,63 @@ const OrderDetails = () => {
   const [orderDetails, setOrderDetails] = useState(null);
   const { products } = useContext(ShopContext);
 
+  // Status configuration with icons and colors
+  const getStatusConfig = (status) => {
+    const configs = {
+      'PENDING': {
+        label: 'Ready to be shipped',
+        color: '#FFA500',
+        icon: (
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 8V12L15 15" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="2"/>
+          </svg>
+        )
+      },
+      'IN_TRANSIT': {
+        label: 'In transit',
+        color: '#2196F3',
+        icon: (
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M13 16V6C13 4.89543 13.8954 4 15 4H19C20.1046 4 21 4.89543 21 6V16M13 16H3M13 16L15 16M21 16H15M15 16V18C15 19.1046 15.8954 20 17 20C18.1046 20 19 19.1046 19 18V16M3 16V6C3 4.89543 3.89543 4 5 4H9C10.1046 4 11 4.89543 11 6V16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+        )
+      },
+      'OUT_FOR_DELIVERY': {
+        label: 'Out for delivery',
+        color: '#9C27B0',
+        icon: (
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M9 17C9 18.1046 8.10457 19 7 19C5.89543 19 5 18.1046 5 17C5 15.8954 5.89543 15 7 15C8.10457 15 9 15.8954 9 17Z" stroke="currentColor" strokeWidth="2"/>
+            <path d="M19 17C19 18.1046 18.1046 19 17 19C15.8954 19 15 18.1046 15 17C15 15.8954 15.8954 15 17 15C18.1046 15 19 15.8954 19 17Z" stroke="currentColor" strokeWidth="2"/>
+            <path d="M5 17H3V13L5 5H14V17M5 17H7M14 17H15M19 17H21V13H17M14 17H15M15 17C15 15.8954 15.8954 15 17 15M17 15V9H21L23 13H21" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+        )
+      },
+      'DELIVERED': {
+        label: 'Delivered',
+        color: '#4CAF50',
+        icon: (
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M9 12L11 14L15 10" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="2"/>
+          </svg>
+        )
+      },
+      'RETURNED': {
+        label: 'Returned to warehouse',
+        color: '#F44336',
+        icon: (
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M9 14L4 9M4 9L9 4M4 9H15C18.3137 9 21 11.6863 21 15C21 18.3137 18.3137 21 15 21H13" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+        )
+      }
+    };
+    
+    return configs[status] || configs['PENDING'];
+  };
+
   useEffect(() => {
     const fetchOrderDetails = async () => {
       try {
@@ -58,10 +115,17 @@ const OrderDetails = () => {
               <h1 className="page-title">Order Details</h1>
               <p className="page-subtitle">#{orderDetails.orderNumber}</p>
             </div>
-            <div className="order-status-badge">
-              <div className="status-indicator completed"></div>
-              <span>Completed</span>
-            </div>
+            {(() => {
+              const statusConfig = getStatusConfig(orderDetails.status);
+              return (
+                <div className="order-status-badge" style={{ backgroundColor: `${statusConfig.color}15`, borderColor: statusConfig.color }}>
+                  <div className="status-icon" style={{ color: statusConfig.color }}>
+                    {statusConfig.icon}
+                  </div>
+                  <span style={{ color: statusConfig.color }}>{statusConfig.label}</span>
+                </div>
+              );
+            })()}
           </div>
         </div>
 

@@ -124,28 +124,41 @@
   display: flex;
   align-items: center;
   gap: var(--spacing-sm);
-  background: rgba(52, 199, 89, 0.1);
   padding: var(--spacing-sm) var(--spacing-lg);
   border-radius: var(--border-radius-full);
-  border: 1px solid rgba(52, 199, 89, 0.2);
+  border: 2px solid;
+  transition: all 0.3s ease;
+  animation: statusPulse 2s ease-in-out infinite;
 }
 
-.status-indicator {
-  width: 12px;
-  height: 12px;
-  border-radius: var(--border-radius-full);
+.status-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
 }
 
-.status-indicator.completed {
-  background: linear-gradient(135deg, #34C759, #30A46C);
-  box-shadow: 0 0 0 3px rgba(52, 199, 89, 0.2);
+.status-icon svg {
+  width: 20px;
+  height: 20px;
+  stroke-width: 2.5;
 }
 
 .order-status-badge span {
   font-family: var(--font-primary);
   font-size: 0.875rem;
   font-weight: 600;
-  color: var(--success-color);
+  white-space: nowrap;
+}
+
+@keyframes statusPulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 currentColor;
+  }
+  50% {
+    box-shadow: 0 0 0 4px transparent;
+  }
 }
 
 /* Card Styles */
