@@ -7,6 +7,7 @@ import { backend_url, currency } from "../../App";
 import { Button, Typography } from '@mui/material';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import { calculateShippingCost } from '../../utils/shippingUtils';
 
 const CartItems = () => {
   const { products, cartItems, removeFromCart, getTotalCartAmount, applyDiscount } = useContext(ShopContext);
@@ -59,16 +60,8 @@ const CartItems = () => {
     setDiscountAppliedMessage("Discount removed");
   };
 
-  // Calculate shipping cost based on cart total
-  const shippingCost = useMemo(() => {
-    if (cartTotal >= 200) {
-      return 0; // Free shipping
-    } else if (cartTotal >= 100 && cartTotal < 200) {
-      return 25; // $25 shipping
-    } else {
-      return 50; // $50 shipping
-    }
-  }, [cartTotal]);
+  // Calculate shipping cost based on cart total using reusable utility
+  const shippingCost = useMemo(() => calculateShippingCost(cartTotal), [cartTotal]);
 
   const getTotalAfterDiscount = () => {
     const discount = cartTotal * discountPercentage / 100;

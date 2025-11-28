@@ -9,10 +9,11 @@ import {
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import CreditCardIcon from '@mui/icons-material/CreditCard';
+import { calculateShippingCost } from '../../utils/shippingUtils';
 import './Checkout.css';
 
 const Checkout = () => {
-  const { getTotalCartAmount, discountPercentage , cartItems} = useContext(ShopContext);
+  const { getTotalCartAmount, discountPercentage, appliedCouponCode, cartItems} = useContext(ShopContext);
   const [addresses, setAddresses] = useState([]);
   const [selectedAddress, setSelectedAddress] = useState('');
   const [cards, setCards] = useState([]);
@@ -112,15 +113,7 @@ const handleCloseSnackbar = () => {
   // Memoize cart calculations to ensure they update when cartTotal changes
   const subtotal = useMemo(() => cartTotal, [cartTotal]);
   
-  const shippingCost = useMemo(() => {
-    if (cartTotal >= 200) {
-      return 0; // Free shipping
-    } else if (cartTotal >= 100 && cartTotal < 200) {
-      return 25; // $25 shipping
-    } else {
-      return 50; // $50 shipping
-    }
-  }, [cartTotal]);
+  const shippingCost = useMemo(() => calculateShippingCost(cartTotal), [cartTotal]);
 
   const totalAfterDiscount = useMemo(() => {
     const discount = cartTotal * discountPercentage / 100;
@@ -140,6 +133,14 @@ const handleCloseSnackbar = () => {
   };
 
   const validateWelcomeCoupon = () => {
+    // Only validate if WELCOME coupon is applied
+    if (appliedCouponCode !== 'WELCOME') {
+      return {
+        isValid: true,
+        requirements: []
+      };
+    }
+
     const MINIMUM_VALUE = 150;
     const MINIMUM_ITEMS = 3;
     
@@ -360,8 +361,8 @@ const handleCloseSnackbar = () => {
   };
 
   const handlePayment = async () => {
-    // Validate WELCOME coupon if discount is applied
-    if (discountPercentage > 0) {
+    // Validate WELCOME coupon if it's applied
+    if (discountPercentage > 0 && appliedCouponCode === 'WELCOME') {
       const validation = validateWelcomeCoupon();
       
       if (!validation.isValid) {
@@ -438,7 +439,7 @@ const handleCloseSnackbar = () => {
                   <span>Discount ({discountPercentage}%)</span>
                   <span className="discount-amount">-{currency}{(subtotal * discountPercentage / 100).toFixed(2)}</span>
                 </div>
-                {(() => {
+                {appliedCouponCode === 'WELCOME' && (() => {
                   const validation = validateWelcomeCoupon();
                   if (!validation.isValid) {
                     return (

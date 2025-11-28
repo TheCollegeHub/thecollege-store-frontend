@@ -7,6 +7,7 @@ export const ShopContext = createContext(null);
 const ShopContextProvider = (props) => {
   const [products, setProducts] = useState([]);
   const [discountPercentage, setDiscountPercentage] = useState(0);
+  const [appliedCouponCode, setAppliedCouponCode] = useState('');
   const [loginDialogOpen, setLoginDialogOpen] = useState(false);
 
   const getDefaultCart = () => {
@@ -146,6 +147,7 @@ const ShopContextProvider = (props) => {
       if (response.ok) {
         const data = await response.json();
         setDiscountPercentage(data.discountPercentage);
+        setAppliedCouponCode(code.toUpperCase());
         return { status: 200, discountPercentage: data.discountPercentage };
       } else {
         return { status: response.status };
@@ -165,6 +167,7 @@ const ShopContextProvider = (props) => {
     getTotalCartAmount,
     applyDiscount,
     discountPercentage,
+    appliedCouponCode,
     clearCart
   };
 
