@@ -35,7 +35,7 @@ const ShopCategory = (props) => {
   };
 
   const filteredAndSortedProducts = sortProducts(
-    allproducts.filter(item => item.category === props.category)
+    allproducts.filter(item => item.gender === props.category)
   );
 
   return (

@@ -14,7 +14,7 @@ const RelatedProducts = ({category,id}) => {
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({category:category}),
+      body: JSON.stringify({category: typeof category === 'object' ? category._id : category}),
       })
     .then((res)=>res.json()).then((data)=>setRelated(data))
   },[])
